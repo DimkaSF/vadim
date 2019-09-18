@@ -164,3 +164,77 @@ html, body{
     text-decoration: underline;
     cursor: pointer;
 }
+
+
+div.space1 { display:block; height:1px !important; font-size:0px; overflow:hidden; }
+div.space2 { display:block; height:2px !important; font-size:0px; overflow:hidden; }
+div.space3 { display:block; height:3px !important; font-size:0px; overflow:hidden; }
+div.space4 { display:block; height:4px !important; font-size:0px; overflow:hidden; }
+div.space5 { display:block; height:5px !important; font-size:0px; overflow:hidden; }
+div.space10 { display:block; height:10px !important; font-size:0px; overflow:hidden; }
+div.space15 { display:block; height:15px !important; font-size:0px; overflow:hidden; }
+div.space20 { display:block; height:20px !important; font-size:0px; overflow:hidden; }
+div.space25 { display:block; height:25px !important; font-size:0px; overflow:hidden; }
+div.space30 { display:block; height:30px !important; font-size:0px; overflow:hidden; }
+div.space35 { display:block; height:35px !important; font-size:0px; overflow:hidden; }
+div.space40 { display:block; height:40px !important; font-size:0px; overflow:hidden; }
+div.space45 { display:block; height:45px !important; font-size:0px; overflow:hidden; }
+div.space50 { display:block; height:50px !important; font-size:0px; overflow:hidden; }
+div.space70 { display:block; height:70px !important; font-size:0px; overflow:hidden; }
+span.space1 { display:inline-block; vertical-align:middle; width:1px !important; font-size:0px; overflow:hidden; }
+span.space2 { display:inline-block; vertical-align:middle; width:2px !important; font-size:0px; overflow:hidden; }
+span.space3 { display:inline-block; vertical-align:middle; width:3px !important; font-size:0px; overflow:hidden; }
+span.space4 { display:inline-block; vertical-align:middle; width:4px !important; font-size:0px; overflow:hidden; }
+span.space5 { display:inline-block; vertical-align:middle; width:5px !important; font-size:0px; overflow:hidden; }
+span.space10 { display:inline-block; vertical-align:middle; width:10px !important; font-size:0px; overflow:hidden; }
+span.space15 { display:inline-block; vertical-align:middle; width:15px !important; font-size:0px; overflow:hidden; }
+span.space20 { display:inline-block; vertical-align:middle; width:20px !important; font-size:0px; overflow:hidden; }
+span.space25 { display:inline-block; vertical-align:middle; width:25px !important; font-size:0px; overflow:hidden; }
+span.space30 { display:inline-block; vertical-align:middle; width:30px !important; font-size:0px; overflow:hidden; }
+span.space35 { display:inline-block; vertical-align:middle; width:35px !important; font-size:0px; overflow:hidden; }
+span.space40 { display:inline-block; vertical-align:middle; width:40px !important; font-size:0px; overflow:hidden; }
+span.space45 { display:inline-block; vertical-align:middle; width:45px !important; font-size:0px; overflow:hidden; }
+span.space50 { display:inline-block; vertical-align:middle; width:50px !important; font-size:0px; overflow:hidden; }
+span.space1.inherit { font-size:inherit; }
+span.space2.inherit { font-size:inherit; }
+span.space3.inherit { font-size:inherit; }
+span.space4.inherit { font-size:inherit; }
+span.space5.inherit { font-size:inherit; }
+span.space10.inherit { font-size:inherit; }
+span.space15.inherit { font-size:inherit; }
+span.space20.inherit { font-size:inherit; }
+span.space25.inherit { font-size:inherit; }
+span.space30.inherit { font-size:inherit; }
+span.space35.inherit { font-size:inherit; }
+span.space40.inherit { font-size:inherit; }
+span.space45.inherit { font-size:inherit; }
+span.space50.inherit { font-size:inherit; }
+
+/* POSITIONING */
+.aCenter { text-align:center !important; }
+.aLeft { text-align:left !important; }
+.aRight { text-align:right !important; }
+.aJustify { text-align:justify !important; }
+.vTop { vertical-align:top !important; }
+.vMiddle { vertical-align:middle !important; }
+.vBottom { vertical-align:bottom !important; }
+.fLeft { float:left !important; }
+.fRight { float:right !important; }
+.fCenter { margin:0 auto !important; }
+.noclear { clear:none !important; }
+a.aLeft * { text-align:left !important; }
+a.aRight * { text-align:right !important; }
+a.aCenter * { text-align:center !important; }
+
+.clear { clear:both !important; float:none !important; width:auto !important; height:0px !important; border:none !important; overflow:hidden !important; position:relative; }
+
+.hidden { display:none; }
+
+form{
+    padding: 10px 10px 10px 10px;
+}
+
+/*Класс на ширину инпутов в редактировании*/
+.edit_inputs{
+    width: 450px;
+}
