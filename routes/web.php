@@ -27,6 +27,7 @@ Route::group(['prefix'=>"admin", 'middleware'=>"auth"], function(){
     Route::get("/delete/album_{al_id}/photo_{ph_id}", 'AdminController@delete_one_photo');
     Route::post("/edit_al/new_cover", 'AdminController@save_new_cover');
     Route::post("/gettags", 'AdminController@getTags');
+    Route::post("/save_new_tags", 'AdminController@saveNewTags');
 });
 
 Route::get('/home', 'MyController@home')->name('home');

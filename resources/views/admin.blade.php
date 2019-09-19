@@ -64,21 +64,24 @@
 
     <div class="row edit_al">
         <div class="col-md-12" style="margin-top: 20px">
-            <select name="edit_select" class="edit_inputs">
-                <option>Какой альбом правим?</option>
+            <select name="edit_select" class="edit_select">
+                <option value="0">Какой альбом правим?</option>
                 @foreach($albums_names as $name)
                     <option value="{{$name->id}}" data-al_name="{{$name->name}}">{{$name->name}}</option>
                 @endforeach
             </select>
             <div class="space5"></div>
-            <input name="tags_edit" type="text" />
+            <form id="edit_new_tags" style="padding:0; width:500px">
+                <input name="tags_edit" type="text" />
+                <span class="space5"></span>
+                <button type="submit" class="edit_submit">Обновить теги</button>
+            </form>
+
         </div>
 
         <div id="edit_al_photos" class="col-md-6">
-
         </div>
         <div id="edit_al_cover" class="col-md-6">
-
         </div>
     </div>
     <div class="row delete_al">
@@ -134,9 +137,10 @@
             placeholder: 'Выбери тег',
             maxDropHeight: 145,
             noSuggestionText: 'Такого тега ещё не было.',
-            cls: 'edit_inputs'
+            cls: 'edit_input'
         });
         ms_edit.disable();
+        $("#edit_new_tags button").attr("disabled", true);
     });
 
     var cropper;
@@ -155,6 +159,7 @@
     $("select[name=edit_select]").on("change", function(){
         ms_edit.enable();
         ms_edit.clear();
+        $("#edit_new_tags button").attr("disabled", false);
         $("#edit_al_photos").html("");
         $("#edit_al_cover").html("");
         var link = "/admin/edit_al_" + $("select[name=edit_select] option:selected").val();
@@ -202,6 +207,29 @@
             $(this).attr("onclick", "choose_as_new_cover($(this))");
         });
     }
+
+    $("#edit_new_tags").on("submit", function(e){
+        e.preventDefault();
+        e.stopPropagation();
+
+        var postData = $(this).serializeArray();
+        postData.push({
+            name:'_token',
+            value:$('meta[name="csrf-token"]').attr('content')
+        });
+        postData.push({
+            name:'album_id',
+            value:$("select[name=edit_select] option:selected").val()
+        });
+        console.log(postData);
+        $.post(
+            "/admin/save_new_tags",
+            postData,
+            function(data){
+                alert(data[1]);
+            }
+        )
+    });
 
     function choose_as_new_cover(elem){
         //$('.work_with_cover').append('<img id="cover" src = "'+elem.find('img:first').attr('src')+'" width="100%">');
@@ -297,6 +325,10 @@
 
     $("button[data-action*=_al]").on("click", function(e){
         e.preventDefault();
+        if($(this).data("action") == "edit_al"){
+            ms_edit.clear();
+            $("select[name=edit_select]").val(0)
+        }
         $("div[class*='_al']").slideUp();
         $("."+$(this).data("action")).slideToggle();
     });

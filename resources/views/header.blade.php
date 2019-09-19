@@ -8,6 +8,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="{{asset('css/index.css')}}">
 
     <script
@@ -28,7 +29,7 @@
         <div class="container">
             <div class="d-sm-none">
                 <a href="#" class="navbar-brand">
-                    {{--<img src="https://getbootstrap.com/docs/4.1/assets/brand/bootstrap-solid.svg" alt="logo" width="30" height="30">--}}
+                    <img src="https://getbootstrap.com/docs/4.1/assets/brand/bootstrap-solid.svg" alt="logo" width="30" height="30">
                 </a>
             </div>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="toggle nav">
@@ -58,8 +59,6 @@
                 </ul>
             </div>
         </div>
-
-
     </nav>
 
 
@@ -68,7 +67,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <div id="before-load">
-        <!-- Иконка Font Awesome -->
         <i class="fa fa-spinner fa-spin"></i>
     </div>
 
@@ -76,12 +74,18 @@
 <div class="content">
     @yield('content')
 </div>
-    <script type="text/javascript">
-        $(window).on('load', function () {
-             $('#before-load').find('i').fadeOut().end().delay(400).fadeOut('slow');
-        });
 
-    </script>
+<div class="row footer">
+    @include('footer')
+</div>
+
+<script type="text/javascript">
+$(window).on('load', function () {
+     $('#before-load').find('i').fadeOut().end().delay(400).fadeOut('slow');
+});
+
+</script>
+
 
 </body>
 </html>

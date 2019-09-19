@@ -38,14 +38,11 @@
             var colorThief = new ColorThief();
             var images = document.getElementsByTagName('img');
             var containers_of_text = document.getElementsByClassName('overlay');
-            for(var i =1; i<images.length; i++){
+            console.log(images);
+            for(var i=2; i<images.length; i++){
                 var res = colorThief.getColor(images[i]);
-                containers_of_text[i-1].style.backgroundColor = "rgb("+res[0]+", "+res[1]+", "+res[2]+", 0.8)";
+                containers_of_text[i-2].style.backgroundColor = "rgb("+res[0]+", "+res[1]+", "+res[2]+", 0.8)";
             }
         })
     </script>
-
-
-
-
 @endsection

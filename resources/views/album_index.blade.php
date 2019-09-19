@@ -44,30 +44,26 @@
     <div id="slide_down">
         <div class="container">
             <div class="row">
-                <div class="col-md-6 col-sx-6">
-                    <div class="name_of_album_in_index">
-                        <h2 style="text-transform: uppercase">{{$al_info->name}}</h2>
-                    </div>
+                <div class="col-md-6 col-10 name_of_album_in_index">
+                    <p style="text-transform: uppercase; font-size: 30px">{{$al_info->name}}</p>
                 </div>
 
-                <div class="col-md-6 col-sx-6 justify-content-end">
-                    <div class="close_album">
-                        <a style="color: inherit; text-decoration: none;" href="/">
-                            <i class="fa fa-times fa-2x"></i>
-                        </a>
-                    </div>
+                <div class="col-md-6 col-2 justify-content-end close_album">
+                    <a style="color: inherit; text-decoration: none;" href="/">
+                        <i class="fa fa-times fa-2x"></i>
+                    </a>
                 </div>
 
             </div>
             <div class="row">
                 <div class="col-md-12 col-sx-12 album_description_container">
-                    @if ($al_info->description == "") <h4 class="album_description">Описание отсутствует</h4>
-                    @else <h4 class="album_description">{{$al_info->description}}</h4>
+                    @if ($al_info->description == "") <p class="album_description">Описание отсутствует</p>
+                    @else <p class="album_description">{{$al_info->description}}</p>
                     @endif
-                    
+
                 </div>
             </div>
-            <div class="row" style="padding-top: 40px;">
+            <div class="row">
                 <div id="demo" class="carousel slide" data-ride="carousel" style=" width: 100%">
 
                     <!-- Indicators -->
@@ -96,7 +92,7 @@
                     </a>
 
                 </div>
-                <ul class="list-inline" style="margin: auto; padding-top: 20px;">
+                <ul class="list-inline">
                     @foreach($photos_of_album as $photo)
                         <li class="list-inline-item" style="padding-top: 5px" data-target="#demo" data-slide-to="{{$loop->index}}">
                             <img style="width: 40px;" src="{{url('img/'.$al_info->name.'/'.$photo->photo->name)}}">

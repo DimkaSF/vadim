@@ -1,21 +1,21 @@
 
+.row{
+    margin:0;
+}
+
 .navbar-nav {
-    /*float:none;*/
     text-align: center;
     margin:auto;
     width: 100%;
 }
 
-
 .navbar-nav li {
     min-width: 20%;
     min-height: 120px;
-    /*padding-top: 50px;*/
 }
 
 html, body{
     height: 100%;
-
 }
 
 #slide_down {
@@ -32,10 +32,21 @@ html, body{
 
 .album_description_container{
     text-align: center;
+    font-size: 20px;
+}
+.album_description{
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.list-inline{
+    margin: auto;
+    padding-left: 10px !important;
+    text-align: center;
 }
 
 .close_album{
-    float: right;
+    text-align: end;
     padding-right: 3%;
     padding-top: 1%;
 }
@@ -235,6 +246,39 @@ form{
 }
 
 /*Класс на ширину инпутов в редактировании*/
-.edit_inputs{
-    width: 450px;
+.edit_select{
+    width: 500px;
 }
+
+.edit_input{
+    width: 362px;
+    float:left;
+}
+
+.edit_submit{
+    min-height: 35px;
+    margin-left: 5px;
+}
+
+/*Footer*/
+.footer{
+    background-color: black;
+    color:gray;
+    text-align: center;
+    height:40px;
+
+}
+.footer .container{
+    height:inherit;
+}
+
+.footer .name{
+    height:inherit;
+}
+
+.footer p, .footer i{
+    display:inline;
+    vertical-align: middle;
+}
+
+

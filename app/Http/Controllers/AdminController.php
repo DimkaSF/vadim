@@ -167,4 +167,19 @@ class AdminController extends Controller
 
         return $tags;
     }
+
+    public function saveNewTags(Request $request){
+        DB::table("tags")
+            ->where("album_id", $request->album_id)
+            ->delete();
+
+        $newtags = array();
+
+        foreach ($request->tags_edit as $key => $tag) {
+           $newtags[$key] = ["album_id" => $request->album_id, "tag" => $tag];
+        }
+        DB::table('tags')->insert($newtags);
+
+        return array(0 , "Теги успешно обновлены.");
+    }
 }
