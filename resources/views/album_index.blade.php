@@ -42,7 +42,6 @@
 
 
     <div id="slide_down">
-        <div class="container">
             <div class="row">
                 <div class="col-md-6 col-10 name_of_album_in_index">
                     <p style="text-transform: uppercase; font-size: 30px">{{$al_info->name}}</p>
@@ -65,18 +64,15 @@
             </div>
             <div class="row">
                 <div id="demo" class="carousel slide" data-ride="carousel" style=" width: 100%">
-
-                    <!-- Indicators -->
-
-                    <div class="carousel-inner" style="">
+                    <div class="carousel-inner">
                         @foreach($photos_of_album as $photo)
                             @if($loop->index == 0)
                                 <div class="carousel-item active carousel-div">
-                                    <img id="title" class="carousel-image" src="{{url('img/'.$al_info->name.'/'.$photo->photo->name)}}" >
+                                    <img id="title" class="carousel-image d-block" src="{{url('img/'.$al_info->name.'/'.$photo->photo->name)}}" >
                                 </div>
                             @else
-                                <div class=" carousel-item carousel-div"  >
-                                    <img class="carousel-image" src="{{url('img/'.$al_info->name.'/'.$photo->photo->name)}}">
+                                <div class="carousel-item carousel-div"  >
+                                    <img class="carousel-image d-block" src="{{url('img/'.$al_info->name.'/'.$photo->photo->name)}}">
                                 </div>
 
                             @endif
@@ -103,7 +99,6 @@
             </div>
 
             <div class="row justify-content-end" style="padding-right: 3%">
-
                     @if($al_info->id != 1)
                         <a style="color: inherit; text-decoration: none;" href="/album_{{$prev_id}}">
                             <i class="fa fa-fast-backward fa-2x" style="margin-right: 5px"></i>
@@ -117,7 +112,6 @@
                     @endif
 
             </div>
-        </div>
 
     </div>
 

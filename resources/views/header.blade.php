@@ -26,38 +26,34 @@
 <body>
 
     <nav class="navbar navbar-expand-sm navbar-light">
-        <div class="container">
-            <div class="d-sm-none">
-                <a href="#" class="navbar-brand">
-                    <img src="https://getbootstrap.com/docs/4.1/assets/brand/bootstrap-solid.svg" alt="logo" width="30" height="30">
-                </a>
-            </div>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="toggle nav">
-                <span class="navbar-toggler-icon "></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav">
-                    <li class="nav-item active ">
-                        <a href="/" class="nav-link">Фото</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Жанры</a>
-                    </li>
-                    <li class="nav-item">
-                        <div class="d-none d-sm-block">
-                            <a href="#" class="nav-link navbar-brand" style="margin:0;">
-                                <img src="https://getbootstrap.com/docs/4.1/assets/brand/bootstrap-solid.svg" alt="logo" width="50" height="50">
-                            </a>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Инста</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/me" class="nav-link">Кто я?</a>
-                    </li>
-                </ul>
-            </div>
+        <div class="d-sm-none">
+            <a href="#" class="navbar-brand">
+                <img src="https://getbootstrap.com/docs/4.1/assets/brand/bootstrap-solid.svg" alt="logo" width="30" height="30">
+            </a>
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="toggle nav">
+            <span class="navbar-toggler-icon "></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+                <li class="nav-item active align-self-center">
+                    <a href="/" class="nav-link">Фото</a>
+                </li>
+                <li class="nav- align-self-center">
+                    <a href="/genres" class="nav-link">Жанры</a>
+                </li>
+                <li class="nav-item align-self-center">
+                    <a href="#" class="nav-link navbar-brand" style="margin:0;">
+                        <img src="https://getbootstrap.com/docs/4.1/assets/brand/bootstrap-solid.svg" alt="logo" width="50" height="50">
+                    </a>
+                </li>
+                <li class="nav-item align-self-center">
+                    <a href="/inst" class="nav-link">Инста</a>
+                </li>
+                <li class="nav-item align-self-center">
+                    <a href="/me" class="nav-link">Кто я?</a>
+                </li>
+            </ul>
         </div>
     </nav>
 
@@ -69,8 +65,6 @@
     <div id="before-load">
         <i class="fa fa-spinner fa-spin"></i>
     </div>
-
-
 <div class="content">
     @yield('content')
 </div>

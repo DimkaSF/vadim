@@ -11,7 +11,8 @@
 
 .navbar-nav li {
     min-width: 20%;
-    min-height: 120px;
+    display:inline-block;
+    height:inherit;
 }
 
 html, body{
@@ -22,6 +23,11 @@ html, body{
     display:none;
     height: inherit;
     overflow: auto;
+}
+
+#slide_down .row{
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .name_of_album_in_index{
@@ -73,9 +79,12 @@ html, body{
 .carousel-div{
     margin: auto;
     text-align: center;
-    height: 70vh;
     width: 800px;
+    height:600px;
+    margin-top:60px;
 }
+
+
 
 .carousel-image{
     object-fit: contain;
@@ -85,7 +94,6 @@ html, body{
     width: 100%;
     overflow:hidden;
     margin: 0;
-
 }
 
 .small img{
@@ -265,8 +273,9 @@ form{
     background-color: black;
     color:gray;
     text-align: center;
-    height:40px;
-
+    position: fixed;
+    bottom:0;
+    width:100%;
 }
 .footer .container{
     height:inherit;
@@ -281,4 +290,21 @@ form{
     vertical-align: middle;
 }
 
+.me .big{
+    font-size:50px;
+
+}
+.me .small{
+    font-size:25px;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 400px){
+    .carousel-div{
+        height:300px;
+    }
+    .name_of_album{
+        font-size: 20px;
+    }
+}
 

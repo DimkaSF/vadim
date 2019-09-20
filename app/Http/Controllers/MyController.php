@@ -103,5 +103,11 @@ class MyController extends Controller
         return view("/home/me");
     }
 
+    public function getGenres(){
 
+    }
+
+    public function getInst(){
+        
+    }
 }
