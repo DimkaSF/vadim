@@ -32,5 +32,7 @@ Route::group(['prefix'=>"admin", 'middleware'=>"auth"], function(){
 
 Route::get('/home', 'MyController@home')->name('home');
 Route::get('/me', 'MyController@WhoAmI');
-Route::get('/genres', 'MyController@getGenres');
+Route::get('/genres', 'MyController@getGenresIndex');
+Route::get('/genres/gettags', 'MyController@getTags');
+
 Route::get('/inst', 'MyController@getInst');

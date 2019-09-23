@@ -16,15 +16,10 @@
             integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
             crossorigin="anonymous"></script>
 
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-          rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
-          crossorigin="anonymous">
-
     {{--<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>--}}
     <title>Fuck yeah</title>
 </head>
 <body>
-
     <nav class="navbar navbar-expand-sm navbar-light">
         <div class="d-sm-none">
             <a href="#" class="navbar-brand">
@@ -37,48 +32,49 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav">
                 <li class="nav-item active align-self-center">
-                    <a href="/" class="nav-link">Фото</a>
+                    <a href="/" class="nav-link">ФОТО</a>
                 </li>
                 <li class="nav- align-self-center">
-                    <a href="/genres" class="nav-link">Жанры</a>
+                    <a href="/genres" class="nav-link">ЖАНРЫ</a>
                 </li>
                 <li class="nav-item align-self-center">
                     <a href="#" class="nav-link navbar-brand" style="margin:0;">
-                        <img src="https://getbootstrap.com/docs/4.1/assets/brand/bootstrap-solid.svg" alt="logo" width="50" height="50">
+                        <img src="{{asset("/img/logo.png")}}" alt="logo" width="100" />
                     </a>
                 </li>
                 <li class="nav-item align-self-center">
-                    <a href="/inst" class="nav-link">Инста</a>
+                    <a href="/inst" class="nav-link">ИНСТА</a>
                 </li>
                 <li class="nav-item align-self-center">
-                    <a href="/me" class="nav-link">Кто я?</a>
+                    <a href="/me" class="nav-link">КТО Я?</a>
                 </li>
             </ul>
         </div>
     </nav>
 
 
-
-<script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <div id="before-load">
         <i class="fa fa-spinner fa-spin"></i>
     </div>
-<div class="content">
-    @yield('content')
-</div>
 
-<div class="row footer">
-    @include('footer')
-</div>
+    <div class="content" style="height:100%;">
+        @yield('content')
+    </div>
 
-<script type="text/javascript">
-$(window).on('load', function () {
-     $('#before-load').find('i').fadeOut().end().delay(400).fadeOut('slow');
-});
+    <div class="row footer">
+        @include('footer')
+    </div>
 
-</script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+    $(window).on('load', function () {
+         $('#before-load').find('i').fadeOut().end().delay(400).fadeOut('slow');
+    });
+
+    </script>
 
 
 </body>

@@ -103,11 +103,15 @@ class MyController extends Controller
         return view("/home/me");
     }
 
-    public function getGenres(){
+    public function getGenresIndex(){
+        return view("/home/genres");
+    }
 
+    public function getTags(){
+        return DB::select("SELECT DISTINCT tag as text, COUNT(1) as weight FROM tags GROUP BY tag ORDER BY weight DESC");
     }
 
     public function getInst(){
-        
+
     }
 }
