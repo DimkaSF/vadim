@@ -3,7 +3,7 @@
 @section('content')
 <div class="row me">
     <div class="col-md-6 col-12">
-        <img src="{{asset("/img/ya.png")}}" alt="Фото"/>
+        <img src="{{asset("/img/ya.png")}}" alt="Фото" width="100%" />
     </div>
     <div class="col-md-6 col-12">
         <p class="big">Добрый день!</p>

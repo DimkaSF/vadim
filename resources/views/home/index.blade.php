@@ -34,15 +34,12 @@
 
     <script type="text/javascript">
         $(window).on('load', function () {
-
             var colorThief = new ColorThief();
-            var images = document.getElementsByTagName('img');
-            var containers_of_text = document.getElementsByClassName('overlay');
-            console.log(images);
-            for(var i=2; i<images.length; i++){
-                var res = colorThief.getColor(images[i]);
-                containers_of_text[i-2].style.backgroundColor = "rgb("+res[0]+", "+res[1]+", "+res[2]+", 0.8)";
-            }
-        })
+
+            $(".content").find("div[class^=small]").each(function(){
+                var res = colorThief.getColor($(this).find("img")[0]);
+                $(this).find("div[class=overlay]").css("background", "rgb("+res[0]+", "+res[1]+", "+res[2]+", 0.8)");
+            });
+        });
     </script>
 @endsection

@@ -1,7 +1,7 @@
 @extends('header')
 
 @section('content')
-<div class="row" style="height:inherit">
+<div class="row h-100">
     <div class="g_leftside col-12 col-md-3">
         <h2>Поиск альбомов</h2>
         <form id="searchAlbumByName" action="/search/getalbum" method="POST">

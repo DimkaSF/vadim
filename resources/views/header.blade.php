@@ -23,7 +23,7 @@
     <nav class="navbar navbar-expand-sm navbar-light">
         <div class="d-sm-none">
             <a href="#" class="navbar-brand">
-                <img src="https://getbootstrap.com/docs/4.1/assets/brand/bootstrap-solid.svg" alt="logo" width="30" height="30">
+                <img src="{{asset("/img/logo.png")}}" alt="logo" width="100" />
             </a>
         </div>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="toggle nav">
@@ -31,21 +31,21 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav">
-                <li class="nav-item active align-self-center">
+                <li class="nav-item @if (Request::path() == '/') active @endif  align-self-center">
                     <a href="/" class="nav-link">ФОТО</a>
                 </li>
-                <li class="nav- align-self-center">
+                <li class="nav-item @if (Request::path() == 'genres') active @endif align-self-center">
                     <a href="/genres" class="nav-link">ЖАНРЫ</a>
                 </li>
                 <li class="nav-item align-self-center">
-                    <a href="#" class="nav-link navbar-brand" style="margin:0;">
+                    <a href="/" class="nav-link navbar-brand" style="margin:0;">
                         <img src="{{asset("/img/logo.png")}}" alt="logo" width="100" />
                     </a>
                 </li>
                 <li class="nav-item align-self-center">
-                    <a href="/inst" class="nav-link">ИНСТА</a>
+                    <a href="http://instagram.com/vadim_zaichikov" target="_blank" class="nav-link">ИНСТА</a>
                 </li>
-                <li class="nav-item align-self-center">
+                <li class="nav-item @if (Request::path() == 'me') active @endif align-self-center">
                     <a href="/me" class="nav-link">КТО Я?</a>
                 </li>
             </ul>
@@ -54,10 +54,10 @@
 
 
     <div id="before-load">
-        <i class="fa fa-spinner fa-spin"></i>
+        <img src="{{asset("/img/logo.png")}}" alt="logo" />
     </div>
 
-    <div class="content" style="height:100%;">
+    <div class="content">
         @yield('content')
     </div>
 
@@ -71,7 +71,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script type="text/javascript">
     $(window).on('load', function () {
-         $('#before-load').find('i').fadeOut().end().delay(400).fadeOut('slow');
+        $('#before-load').fadeOut().end().fadeOut(1500);
     });
 
     </script>
