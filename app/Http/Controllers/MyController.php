@@ -11,10 +11,10 @@ namespace App\Http\Controllers;
 use App\Albums_photos;
 use App\Photo;
 use App\PhotoAlbum;
-use function foo\func;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 
 class MyController extends Controller
@@ -104,7 +104,22 @@ class MyController extends Controller
     }
 
     public function getGenresIndex(){
-        return view("/home/genres");
+        $tags = $this->getTags();
+        return view("/home/genres", ["tags" => $tags]);
+    }
+
+    public function getAlbums(Request $request){
+        return DB::select("
+            SELECT
+                al.id,
+                al.name as al_name,
+                al.title_photo_id,
+                ph.name as ph_name
+            FROM
+                photo_albums al
+            LEFT JOIN photos ph ON (al.title_photo_id = ph.id)
+            WHERE al.id IN (SELECT album_id FROM tags WHERE tag = '".$request->tag."')
+            ");
     }
 
     public function getTags(){

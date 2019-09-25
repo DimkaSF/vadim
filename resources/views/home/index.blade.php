@@ -21,10 +21,10 @@
         @foreach($name_with_title as $album)
             <div class="small parent">
                 <a style="color: inherit; text-decoration: none;" href="/album_{{$album->id}}">
-                <img class="img-home" src="{{url('img/'.$album->name.'/'.$album->get_title->name)}}">
-                <div class="overlay">
-                   <div class="name_of_album">{{$album->name}}</div>
-                </div>
+                    <img class="img-home" src="{{url('img/'.$album->name.'/'.$album->get_title->name)}}">
+                    <div class="overlay">
+                       <div class="name_of_album">{{$album->name}}</div>
+                    </div>
                 </a>
             </div>
         @endforeach

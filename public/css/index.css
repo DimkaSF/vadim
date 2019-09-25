@@ -14,8 +14,27 @@
     src: url(/fonts/Room_Black.otf);
 }
 
+@font-face {
+    font-family: opensans;
+    src: url(/fonts/Open_Sans.ttf);
+}
+
 .row{
     margin:0;
+}
+
+.pad-b-20{
+    padding-bottom: 20px !important;
+}
+
+.my_container{
+    margin-left: 6%;
+    margin-right: 6%;
+}
+
+.nopadding{
+    padding: 0 !important;
+    margin: 0 !important;
 }
 
 .navbar-nav {
@@ -38,7 +57,9 @@ html{
 
 body{
     height:inherit;
+    font-family: "room";
 }
+
 
 #slide_down {
     display:none;
@@ -319,8 +340,26 @@ form{
     text-decoration: none;
 }
 
+.footer .phone{
+    font-size:25px;
+    color:white;
+    text-align: center;
+    display:flex;
+}
+
 .footer .links .showtel{
     cursor:pointer;
+}
+
+.footer .modal{
+    margin-top: 10%;
+}
+
+.footer .modal-content{
+    color:black;
+    font-size: 14px;
+    letter-spacing: normal;
+    text-align: center;
 }
 
 .me .big{
@@ -335,15 +374,49 @@ form{
 
 
 /*Genres*/
-.g_leftside{
-    background-color: gray;
+.genres_container{
+    height:100%;
+    min-height: 659px;
 }
-.input-group-append button{
-    border:none;
-}
+
 .g_content{
-    background-color: green;
+    height:inherit;
 }
+
+
+.g_leftside .tag{
+    font-family: "opensans";
+    font-size: 35px;
+    margin-bottom: -6px;
+}
+
+.g_leftside .tag:hover{
+    color: gray;
+    cursor: pointer;
+}
+
+.g_leftside .active{
+    color:gray;
+}
+
+#g_preloader{
+    color:black;
+    width:100%;
+}
+
+#g_img_holder{
+    max-width: 80%;
+}
+
+#g_albums_ajax {
+    display:none;
+    width:100%;
+}
+
+.one_al_aj{
+    display:inline;
+}
+
 
 #exampleModal{
     font-size: 20px;
