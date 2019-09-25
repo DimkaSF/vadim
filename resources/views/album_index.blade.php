@@ -36,90 +36,90 @@
 <body>
 
     <div id="before-load">
-        <!-- Иконка Font Awesome -->
-        <i class="fa fa-spinner fa-spin"></i>
+        <img src="{{asset("/img/logo.png")}}" alt="logo" />
     </div>
 
 
     <div id="slide_down">
-            <div class="row">
-                <div class="col-md-6 col-10 name_of_album_in_index">
-                    <p style="text-transform: uppercase; font-size: 30px">{{$al_info->name}}</p>
-                </div>
-
-                <div class="col-md-6 col-2 justify-content-end close_album">
-                    <a style="color: inherit; text-decoration: none;" href="/">
-                        <i class="fa fa-times fa-2x"></i>
-                    </a>
-                </div>
-
-            </div>
-            <div class="row">
-                <div class="col-md-12 col-sx-12 album_description_container">
-                    @if ($al_info->description == "") <p class="album_description">Описание отсутствует</p>
-                    @else <p class="album_description">{{$al_info->description}}</p>
-                    @endif
-
-                </div>
-            </div>
-            <div class="row">
-                <div id="demo" class="carousel slide" data-ride="carousel" style=" width: 100%">
-                    <div class="carousel-inner">
-                        @foreach($photos_of_album as $photo)
-                            @if($loop->index == 0)
-                                <div class="carousel-item active carousel-div">
-                                    <img id="title" class="carousel-image d-block" src="{{url('img/'.$al_info->name.'/'.$photo->photo->name)}}" >
-                                </div>
-                            @else
-                                <div class="carousel-item carousel-div"  >
-                                    <img class="carousel-image d-block" src="{{url('img/'.$al_info->name.'/'.$photo->photo->name)}}">
-                                </div>
-
-                            @endif
+        <div class="row">
+            <div class="col-md-6 col-10 name_of_album_in_index">
+                <p style="text-transform: uppercase; font-size: 30px">
+                    {{$al_info->name}}
+                    <span style="font-size:14px; text-transform: none">
+                        @foreach($tags as $tag)
+                            #{{$tag->tag}}
                         @endforeach
-                    </div>
+                    </span>
+                </p>
+            </div>
 
-                    <!-- Left and right controls -->
-                    <a class="carousel-control-prev" href="#demo" data-slide="prev">
-                        <span class="carousel-control-prev-icon"></span>
-                    </a>
-                    <a class="carousel-control-next" href="#demo" data-slide="next">
-                        <span class="carousel-control-next-icon"></span>
-                    </a>
+            <div class="col-md-6 col-2 justify-content-end close_album">
+                <a style="color: inherit; text-decoration: none;" href="/">
+                    <i class="fa fa-times fa-2x"></i>
+                </a>
+            </div>
 
-                </div>
-                <ul class="list-inline">
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sx-12 album_description_container">
+                @if ($al_info->description == "") <p class="album_description">Описание отсутствует</p>
+                @else <p class="album_description">{{$al_info->description}}</p>
+                @endif
+            </div>
+        </div>
+        <div class="row">
+            <div id="demo" class="carousel slide" data-ride="carousel" style=" width: 100%">
+                <div class="carousel-inner">
                     @foreach($photos_of_album as $photo)
-                        <li class="list-inline-item" style="padding-top: 5px" data-target="#demo" data-slide-to="{{$loop->index}}">
-                            <img style="width: 40px;" src="{{url('img/'.$al_info->name.'/'.$photo->photo->name)}}">
-                        </li>
+                        @if($loop->index == 0)
+                            <div class="carousel-item active carousel-div">
+                                <img id="title" class="carousel-image d-block" src="{{url('img/'.$al_info->name.'/'.$photo->photo->name)}}" >
+                            </div>
+                        @else
+                            <div class="carousel-item carousel-div"  >
+                                <img class="carousel-image d-block" src="{{url('img/'.$al_info->name.'/'.$photo->photo->name)}}">
+                            </div>
+
+                        @endif
                     @endforeach
-                </ul>
+                </div>
+
+                <!-- Left and right controls -->
+                <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </a>
+                <a class="carousel-control-next" href="#demo" data-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </a>
 
             </div>
+            <ul class="list-inline">
+                @foreach($photos_of_album as $photo)
+                    <li class="list-inline-item" style="padding-top: 5px" data-target="#demo" data-slide-to="{{$loop->index}}">
+                        <img style="width: 40px;" src="{{url('img/'.$al_info->name.'/'.$photo->photo->name)}}">
+                    </li>
+                @endforeach
+            </ul>
 
-            <div class="row justify-content-end" style="padding-right: 3%">
-                    @if($al_info->id != 1)
-                        <a style="color: inherit; text-decoration: none;" href="/album_{{$prev_id}}">
-                            <i class="fa fa-fast-backward fa-2x" style="margin-right: 5px"></i>
-                        </a>
-                    @endif
+        </div>
 
-                    @if($is_last != true)
-                        <a style="color: inherit; text-decoration: none;" href="/album_{{$next_id}}">
-                            <i class="fa fa-fast-forward fa-2x"></i>
-                        </a>
-                    @endif
+        <div class="row justify-content-end" style="padding-right: 3%">
+                @if($al_info->id != 1)
+                    <a style="color: inherit; text-decoration: none;" href="/album_{{$prev_id}}">
+                        <i class="fa fa-fast-backward fa-2x" style="margin-right: 5px"></i>
+                    </a>
+                @endif
 
-            </div>
-
+                @if($is_last != true)
+                    <a style="color: inherit; text-decoration: none;" href="/album_{{$next_id}}">
+                        <i class="fa fa-fast-forward fa-2x"></i>
+                    </a>
+                @endif
+        </div>
     </div>
 
 
     <script type="text/javascript">
-
-
-
         $(window).on('load', function(){
             $('#before-load').find('i').fadeOut().end().delay(400).fadeOut('slow');
 
@@ -129,6 +129,7 @@
             //var container = document.getElementsByClassName('container');
             var slide_down = document.getElementById('slide_down');
             var name_of_album_in_index = document.getElementsByClassName('name_of_album_in_index');
+            var close_album = document.getElementsByClassName('close_album');
             var album_desc = document.getElementsByClassName('album_description');
             var arrows = document.getElementsByClassName('fa');
 
@@ -136,6 +137,7 @@
 
             slide_down.style.backgroundColor = "rgb("+res[0]+", "+res[1]+", "+res[2]+")";
             name_of_album_in_index[0].style.color = "rgb("+(255-res[0])+", "+(255-res[1])+", "+(255-res[2])+")";
+            close_album[0].style.color = "rgb("+(255-res[0])+", "+(255-res[1])+", "+(255-res[2])+")";
             album_desc[0].style.color = "rgb("+(255-res[0])+", "+(255-res[1])+", "+(255-res[2])+")";
             //container[0].style.backgroundColor = "rgb("+res[0]+", "+res[1]+", "+res[2]+")";
 

@@ -79,22 +79,21 @@ class MyController extends Controller
 
         $photos_of_album = Albums_photos::with('photo')
             ->where('id_album', $al_id)->get();
+        $tags = DB::table("tags")->where("album_id", $al_id)->select("tag")->get();
+
         $is_last = false;
-
-
-
         $max_id = PhotoAlbum::find(DB::table('photo_albums')->max('id'));
 
         //dd($al_info, $max_id);
         if($al_info->id == $max_id->id) $is_last = true;
-        else $is_last == false;
 
         $view = view('album_index')->with([
             'al_info' => $al_info,
             'photos_of_album' => $photos_of_album,
             'is_last'=>$is_last,
             'next_id'=>$next_id->id,
-            'prev_id'=>$prev_id->id
+            'prev_id'=>$prev_id->id,
+            'tags' => $tags
         ]);
         return $view;
     }
