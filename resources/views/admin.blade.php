@@ -43,7 +43,7 @@
                 <span class="space20"></span>
                 <input type="file" id="pic" name="picture" accept="image/*" multiple required />
                 <div class="space5"></div>
-                <textarea name="album_desc" rows="3" cols="50" placeholder="Описание альбома"></textarea>
+                <textarea name="album_desc" rows="3" cols="50" style="width: 100%" placeholder="Описание альбома"></textarea>
                 <div class="helper">Максимум 255 символов</div>
                 <div class="space5"></div>
                 <input name="tags" type="text" />
@@ -63,20 +63,20 @@
     </div>
 
     <div class="row edit_al">
-        <div class="col-md-12" style="margin-top: 20px">
+        <div class="col-md-6" style="margin-top: 20px">
             <select name="edit_select" class="edit_select">
                 <option value="0">Какой альбом правим?</option>
                 @foreach($albums_names as $name)
                     <option value="{{$name->id}}" data-al_name="{{$name->name}}">{{$name->name}}</option>
                 @endforeach
             </select>
-            <div class="space5"></div>
-            <form id="edit_new_tags" style="padding:0; width:500px">
-                <input name="tags_edit" type="text" />
+        </div>
+        <div class="col-md-6" style="margin-top: 20px">
+            <form id="edit_new_tags" style="padding:0; width: 100%; min-height: 36px;">
+                <input name="tags_edit" type="text" width="100%" />
                 <span class="space5"></span>
-                <button type="submit" class="edit_submit">Обновить теги</button>
+                <button type="submit" class="col-md-3 col-12 edit_submit">Обновить теги</button>
             </form>
-
         </div>
 
         <div id="edit_al_photos" class="col-md-6">
@@ -137,7 +137,7 @@
             placeholder: 'Выбери тег',
             maxDropHeight: 145,
             noSuggestionText: 'Такого тега ещё не было.',
-            cls: 'edit_input'
+            cls: 'col-md-8 col-12 edit_input'
         });
         ms_edit.disable();
         $("#edit_new_tags button").attr("disabled", true);
@@ -166,7 +166,6 @@
         $.get(
             link,
             function(data){
-                console.log(data);
                 var data_edit = [];
                 var exist_tags = [];
                 $.each(data.all_tags, function(index, tag){
