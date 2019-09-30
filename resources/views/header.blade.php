@@ -37,7 +37,7 @@
                 <li class="nav-item @if (Request::path() == 'genres') active @endif align-self-center">
                     <a href="/genres" class="nav-link">ЖАНРЫ</a>
                 </li>
-                <li class="nav-item align-self-center">
+                <li class="nav-item align-self-center header-logo">
                     <a href="/" class="nav-link navbar-brand" style="margin:0;">
                         <img src="{{asset("/img/logo.png")}}" alt="logo" width="100" />
                     </a>
@@ -70,8 +70,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script type="text/javascript">
-    $(window).on('load', function () {
-        $('#before-load').fadeOut().end().fadeOut(1500);
+    $(document).ready(function () {
+        $('#before-load').fadeOut(1500);
     });
 
     </script>

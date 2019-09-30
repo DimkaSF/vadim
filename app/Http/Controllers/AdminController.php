@@ -116,7 +116,6 @@ class AdminController extends Controller
                     ->select("tag")
                     ->distinct("tag")
                     ->get();
-
         return array("photos" => $photos, "tags" => $tags, "all_tags" => $all_tags);
     }
 
@@ -138,7 +137,7 @@ class AdminController extends Controller
 
     public function save_new_cover(Request $request){
         DB::delete("delete from albums_photos where id_album = ".$request->al_id." and id_photo = (select title_photo_id from photo_albums where id = ".$request->al_id.")");
-        DB::delete("delete from photos where id in (select title_photo_id from photo_albums where id = ".$request->al_id.")");
+        DB::delete("delete from photos where id = (select title_photo_id from photo_albums where id = ".$request->al_id.")");
 
         $image = Image::make(base64_decode($request["edit_cover"]));
         $image->save(public_path('img/'.$request->al_name.'/'.$request->al_name."_cover.jpg"));

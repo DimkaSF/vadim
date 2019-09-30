@@ -176,9 +176,9 @@
                 });
                 ms_edit.setData(data_edit);
                 if(exist_tags.length != 0)  ms_edit.setValue(exist_tags);
+                console.log(data);
 
-
-                for(var i = 0; i < data.photos.length; i++){
+                for(var i = 0, count=data.photos.length; i < count; i++){
                     if(data.photos[i]['ph_name'].indexOf("cover") > 0){
                         $("<div class='edit_al_photo_preview'>Текущая обложка:</div>")
                             .append(
@@ -193,7 +193,6 @@
                             .append("<div class='delete_one_photo'><div onClick='delete_one_photo($(this))' data-al="+data.photos[i]["al_id"]+" data-ph="+data.photos[i]["ph_id"]+">Удалить</div></div>")
                             .appendTo("#edit_al_photos");
                     }
-
                 }
             }
         )
@@ -231,9 +230,8 @@
     });
 
     function choose_as_new_cover(elem){
-        //$('.work_with_cover').append('<img id="cover" src = "'+elem.find('img:first').attr('src')+'" width="100%">');
         $("<div class='edit_al_photo_preview'></div>")
-            .append('<img id="edit_cover" src = "'+elem.parent().parent().find("img[data-al="+elem.data("al")+"][data-ph="+elem.data("ph")+"]").attr("src")+'" width="100%">')
+            .append('<img id="edit_cover" src = "'+elem.parent().parent().find("img").attr("src")+'" width="100%">')
             .append("<button id=\"save_new_cover_button\" onclick=\"save_new_cover("+elem.data("al")+")\">Сохранить</button>")
             .appendTo("#edit_al_cover");
         var img = document.getElementById("edit_cover");
@@ -257,6 +255,7 @@
         fd.append('edit_cover', photo);
         fd.append("al_id", album_id);
         fd.append("al_name", $("select[name=edit_select] option:selected").data("al_name"));
+
         $.ajax({
             type: 'POST',
             url: "/admin/edit_al/new_cover",
@@ -269,21 +268,33 @@
             success: function (data) {
                 alert(data[0]);
                 cropper.destroy();
+                $("#edit_al_cover").empty();
                 $("#save_new_cover_button").remove();
                 $("#edit_cover").remove();
-                //$("<button onclick=\"edit_new_cover()\">Новая обложка</button>").appendTo("#edit_al_cover .edit_al_photo_preview");
-                console.log(data[1]);
 
-                $('<img id="edit_cover" src = "'+data[1]+'" width="100%">').appendTo("#edit_al_cover .edit_al_photo_preview");
+                $("<div class='edit_al_photo_preview'>Текущая обложка:</div>").appendTo("#edit_al_cover");
+                $('<div><img id="edit_cover" src = "'+data[1]+'" width="50%"></div>').appendTo("#edit_al_cover .edit_al_photo_preview");
                 $("<button onclick=\"edit_new_cover()\">Новая обложка</button>").appendTo("#edit_al_cover .edit_al_photo_preview");
-                //$("#edit_cover").attr("src", data[1]);
+
+                $("#edit_al_photos .edit_al_photo_preview").each(function(){
+                    $(this).find("div:first").remove().end()
+                        .append(
+                            $("<div class=\"delete_one_photo\"></div>")
+                                .append(
+                                    $("<div>Удалить</div>")
+                                        .attr("onclick", "choose_as_new_cover($(this))")
+                                        .attr("data-al", $(this).parent().find("img:first").attr("data-al"))
+                                        .attr("data-ph", $(this).parent().find("img:first").attr("data-ph"))
+                                )
+                        )
+                });
             }
         })
     }
 
     function delete_one_photo(elem){
         var link = "/admin/delete/album_"+elem.data("al")+"/photo_"+elem.data("ph");
-        if(confirm("ДЕйствительно удалить это фото?")){
+        if(confirm("Действительно удалить это фото?")){
             $.get(
                 link,
                 function(data){
@@ -367,7 +378,7 @@
             cropBoxResizable: true,
             ready(){
                 cropper.crop();
-                cropper.setCropBoxData({"width":480,"height":360});
+                cropper.setCropBoxData({"width":920,"height":720});
             }
         })
     });

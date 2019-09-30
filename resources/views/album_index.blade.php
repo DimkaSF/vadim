@@ -122,30 +122,6 @@
     <script type="text/javascript">
         $(window).on('load', function(){
             $('#before-load').find('i').fadeOut().end().delay(400).fadeOut('slow');
-
-
-            var colorThief = new ColorThief();
-            var image = document.getElementById('title');
-            //var container = document.getElementsByClassName('container');
-            var slide_down = document.getElementById('slide_down');
-            var name_of_album_in_index = document.getElementsByClassName('name_of_album_in_index');
-            var close_album = document.getElementsByClassName('close_album');
-            var album_desc = document.getElementsByClassName('album_description');
-            var arrows = document.getElementsByClassName('fa');
-
-            var res = colorThief.getColor(image);
-
-            slide_down.style.backgroundColor = "rgb("+res[0]+", "+res[1]+", "+res[2]+")";
-            name_of_album_in_index[0].style.color = "rgb("+(255-res[0])+", "+(255-res[1])+", "+(255-res[2])+")";
-            close_album[0].style.color = "rgb("+(255-res[0])+", "+(255-res[1])+", "+(255-res[2])+")";
-            album_desc[0].style.color = "rgb("+(255-res[0])+", "+(255-res[1])+", "+(255-res[2])+")";
-            //container[0].style.backgroundColor = "rgb("+res[0]+", "+res[1]+", "+res[2]+")";
-
-            for(var i =1; i<arrows.length; i++){
-                console.log( arrows[i]);
-                arrows[i].style.color = "rgb("+(255-res[0])+", "+(255-res[1])+", "+(255-res[2])+")";
-            }
-
             $('#slide_down').slideDown(1000);
         });
 

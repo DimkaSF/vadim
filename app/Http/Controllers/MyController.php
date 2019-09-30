@@ -77,8 +77,11 @@ class MyController extends Controller
         else
             $next_id = $al->get($position);
 
-        $photos_of_album = Albums_photos::with('photo')
-            ->where('id_album', $al_id)->get();
+        $photos_of_album = Albums_photos::join("photos", "albums_photos.id_photo", "=", "photos.id")
+            ->where('id_album', $al_id)
+            ->where("name", "NOT LIKE", "%cover%")
+            ->get();
+
         $tags = DB::table("tags")->where("album_id", $al_id)->select("tag")->get();
 
         $is_last = false;

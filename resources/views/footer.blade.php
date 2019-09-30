@@ -2,8 +2,8 @@
     <img src="{{asset("/img/logo_w.png")}}" alt="Лого" height="100%" />
 </div>
 <div class="col-12 col-md-6 links flex-row-reverse">
-    <a class="showtel"><i class="fa fa-telegram align-self-center" data-toggle="modal" data-target="#Modal" aria-hidden="true"></i></a>
-    <a class="showtel"><i class="fa fa-whatsapp align-self-center" data-toggle="modal" data-target="#Modal" aria-hidden="true"></i></a>
+    <a target="_blank" href="https://t.me/79159983117"><i class="fa fa-telegram align-self-center"></i></a>
+    <a target="_blank" href="https://wa.me/79159983117"><i class="fa fa-whatsapp align-self-center" data-toggle="modal" data-target="#Modal" aria-hidden="true"></i></a>
     <a href="https://www.facebook.com/zaichikovvadim" target="_blank">
         <i class="fa fa-facebook align-self-center" aria-hidden="true"></i>
     </a>
@@ -23,7 +23,7 @@
         </div>
     </div>
 </div>
-<div class="col-12 col-md-2 phone align-self-center">
+<div class="col-12 col-md-2 phone showtel align-self-center">
     +7 906 526 21 25
 </div>
 
