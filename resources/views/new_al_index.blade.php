@@ -32,8 +32,11 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12 text-center">
-                    <p class="al_name">{{$al_info->name}}</p>
+                    <a href="/" class="close"><i class="fa fa-times fRight p-2"></i></a>
+                    <span class="space10"></span>
+                    <span class="al_name">{{$al_info->name}}</span>
                 </div>
+
             </div>
 
             <div class="row justify-content-center">

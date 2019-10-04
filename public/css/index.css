@@ -122,6 +122,11 @@ body{
     font-size: 3vh;
 }
 
+#slide_down .close{
+    text-decoration: none;
+    color:gray;
+}
+
 .carousel-div{
     margin-top: 0 !important;
 }
