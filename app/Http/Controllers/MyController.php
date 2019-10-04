@@ -90,7 +90,7 @@ class MyController extends Controller
         //dd($al_info, $max_id);
         if($al_info->id == $max_id->id) $is_last = true;
 
-        $view = view('album_index')->with([
+        $view = view('new_al_index')->with([
             'al_info' => $al_info,
             'photos_of_album' => $photos_of_album,
             'is_last'=>$is_last,

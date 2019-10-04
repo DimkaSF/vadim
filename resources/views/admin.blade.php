@@ -176,7 +176,6 @@
                 });
                 ms_edit.setData(data_edit);
                 if(exist_tags.length != 0)  ms_edit.setValue(exist_tags);
-                console.log(data);
 
                 for(var i = 0, count=data.photos.length; i < count; i++){
                     if(data.photos[i]['ph_name'].indexOf("cover") > 0){
@@ -219,7 +218,6 @@
             name:'album_id',
             value:$("select[name=edit_select] option:selected").val()
         });
-        console.log(postData);
         $.post(
             "/admin/save_new_tags",
             postData,
@@ -438,11 +436,6 @@
         var imgData = cropper.getCroppedCanvas({width: 960, height:720}).toDataURL("image/jpeg", 1);
         var test = imgData.replace("data:image/jpeg;base64,", "");
         fd.append('cover', test);
-        // Display the key/value pairs
-        for (var pair of fd.entries()) {
-            console.log(pair[0]+ ', ' + pair[1]);
-        }
-
         $.ajax({
             type: 'POST',
             url: link,

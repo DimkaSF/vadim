@@ -61,6 +61,7 @@ body{
 }
 
 
+/* old styles
 #slide_down {
     display:none;
     height: inherit;
@@ -71,6 +72,7 @@ body{
     margin-left: 0;
     margin-right: 0;
 }
+
 
 .name_of_album_in_index{
     position: absolute;
@@ -97,8 +99,32 @@ body{
     text-align: end;
     padding-right: 3%;
     padding-top: 1%;
+}*/
+
+
+
+#slide_down .row{
+    margin-left: 0;
+    margin-right: 0;
 }
 
+#slide_down .al_name{
+    font-family: "room";
+    font-size: 8vh;
+}
+
+#photo_car img{
+    margin:auto;
+}
+
+#slide_down .album_description{
+    font-family: "room";
+    font-size: 3vh;
+}
+
+.carousel-div{
+    margin-top: 0 !important;
+}
 
 #before-load {
     position: fixed; /*фиксированное положение блока*/
