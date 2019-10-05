@@ -53,11 +53,13 @@
 
 html{
     height: 100%;
+
 }
 
 body{
     height:inherit;
     font-family: "room";
+    overflow-y: scroll;
 }
 
 
@@ -129,6 +131,21 @@ body{
 
 .carousel-div{
     margin-top: 0 !important;
+}
+
+.carousel-div img{
+    height: 100%;
+}
+
+.list-inline-item img{
+  object-fit: cover;
+  width: 60px;
+  height: 40px;
+}
+
+#slide_down small{
+  font-size: 20px;
+  color: gray;
 }
 
 #before-load {
@@ -340,6 +357,7 @@ form{
     float: right;
 }
 
+
 /*Footer*/
 .footer{
     background-color: black;
@@ -412,6 +430,7 @@ form{
     min-height: 659px;
 }
 
+
 .g_content{
     height:inherit;
 }
@@ -459,14 +478,6 @@ form{
     text-align: center;
 }
 
-.carousel-control-prev-icon {
- background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
-}
-
-.carousel-control-next-icon {
-  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
-}
-
 @media (max-width: 425px){
     .carousel-div{
         height:300px;
@@ -478,9 +489,19 @@ form{
         letter-spacing: 13px;
     }
 
+    .carousel-div{
+        height:auto;
+    }
+    .carousel-div img{
+        height: auto;
+    }
+
+    #slide_down small{
+      display: block;
+    }
+
+
     #navbarSupportedContent .header-logo{
         display:none;
     }
 }
-
-

@@ -33,8 +33,14 @@
             <div class="row">
                 <div class="col-12 text-center">
                     <a href="/" class="close"><i class="fa fa-times fRight p-2"></i></a>
-                    <span class="space10"></span>
-                    <span class="al_name">{{$al_info->name}}</span>
+                    <span class="al_name">
+                      {{$al_info->name}}
+                    </span>
+                    <small>
+                      @foreach($tags as $tag)
+                        #{{$tag->tag}}
+                      @endforeach
+                    </small>
                 </div>
 
             </div>
@@ -46,7 +52,7 @@
                             <div class="carousel-item
                                     @if($loop->index == 0) active @endif
                                 carousel-div">
-                                <img class="carousel-image d-block" src="{{url('img/'.$al_info->name.'/'.$photo->photo->name)}}" width="100%" height="100%"/>
+                                <img class="carousel-image d-block" src="{{url('img/'.$al_info->name.'/'.$photo->photo->name)}}" width="100%"/>
                             </div>
                         @endforeach
                     </div>
@@ -58,11 +64,11 @@
             </div>
             <div class="space30"></div>
             <div class="row justify-content-center">
-                <div class="col-12">
+                <div class="col-12" >
                     <ul class="list-inline text-center">
                         @foreach($photos_of_album as $photo)
-                            <li class="list-inline-item" style="padding-top: 5px" data-target="#photo_car" data-slide-to="{{$loop->index}}">
-                                <img style="width: 40px;" src="{{url('img/'.$al_info->name.'/'.$photo->photo->name)}}">
+                            <li class="list-inline-item" style="padding-top: 5px;" data-target="#photo_car" data-slide-to="{{$loop->index}}">
+                                <img src="{{url('img/'.$al_info->name.'/'.$photo->photo->name)}}">
                             </li>
                         @endforeach
                     </ul>
