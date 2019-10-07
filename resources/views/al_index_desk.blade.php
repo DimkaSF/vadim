@@ -14,7 +14,7 @@
             integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
             crossorigin="anonymous"></script>
 
-    <title>Заголовок</title>
+    <title>{{$al_info->name}}</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -38,7 +38,7 @@
                     </span>
                     <small>
                       @foreach($tags as $tag)
-                        #{{$tag->tag}}
+                      <a href="/genres/{{$tag->tag}}" class="taglink">#{{$tag->tag}}</a>
                       @endforeach
                     </small>
                 </div>
@@ -84,12 +84,14 @@
                     </p>
                 </div>
             </div>
+
         </div>
 
     </div>
 
     <script type="text/javascript" lang="javascript">
         var next;
+
         $(window).on('load', function(){
             $('#before-load').find('i').fadeOut().end().delay(400).fadeOut('slow');
             $('#slide_down').slideDown(1000);

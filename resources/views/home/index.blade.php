@@ -50,6 +50,12 @@
                 var res = colorThief.getColor($(this).find("img")[0]);
                 $(this).find("div[class=overlay]").css("background", "rgb("+res[0]+", "+res[1]+", "+res[2]+", 0.8)");
             });
+            if($(window).width() <= 425){
+                $(".content").find(".row:first").find("div[class=\"small col-12\"]").each(function(){
+                    $(this).find("a:first").attr("href",
+                        "/m_"+$(this).find("a:first").attr("href").slice(1, $(this).find("a:first").attr("href").length));
+                });
+            }
         });
     </script>
 @endsection

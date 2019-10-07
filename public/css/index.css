@@ -440,6 +440,9 @@ form{
     font-family: "opensans";
     font-size: 35px;
     margin-bottom: -6px;
+    display: block;
+    text-decoration: none;
+    color:black;
 }
 
 .g_leftside .tag:hover{
@@ -465,8 +468,14 @@ form{
     width:100%;
 }
 
-.one_al_aj{
-    display:inline;
+.taglink{
+    text-decoration: none;
+    cursor:pointer;
+    color:gray;
+}
+.taglink:hover{
+    text-decoration: none;
+
 }
 
 
@@ -489,6 +498,10 @@ form{
         letter-spacing: 13px;
     }
 
+    #slide_down .al_name{
+        font-size:5vh;
+    }
+
     .carousel-div{
         height:auto;
     }
@@ -500,8 +513,24 @@ form{
       display: block;
     }
 
-
     #navbarSupportedContent .header-logo{
         display:none;
+    }
+
+    .col-12{
+        padding-left: 0 !important;
+        padding-right:  0 !important;
+        padding-top: 10px;
+    }
+
+    .footer{
+        background: white;
+    }
+    .footer .links{
+        background: white;
+    }
+
+    .footer .links a{
+        color: black;
     }
 }

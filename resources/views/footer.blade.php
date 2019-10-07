@@ -1,4 +1,4 @@
-<div class="col-12 col-md-4">
+<div class="col-12 col-md-4 d-none">
     <img src="{{asset("/img/logo_w.png")}}" alt="Лого" height="100px" />
 </div>
 <div class="col-12 col-md-6 links flex-row-reverse">
@@ -23,7 +23,7 @@
         </div>
     </div>
 </div>
-<div class="col-12 col-md-2 phone showtel align-self-center">
+<div class="col-12 col-md-2 phone showtel align-self-center d-none">
     +7 906 526 21 25
 </div>
 

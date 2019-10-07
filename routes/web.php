@@ -13,7 +13,8 @@
 
 Route::get('/', 'MyController@home');
 
-Route::get('/album_{id}', 'MyController@index_album');
+Route::get('/album_{id}', 'MyController@index_album_desk');
+Route::get('/m_album_{id}', 'MyController@index_album_mob');
 Route::get('/login', 'LoginController@showLogin')->name('showLogin');
 Route::post('/login', 'LoginController@doLogin')->name('doLogin');
 Route::get('/logout', 'LoginController@LogOut');
@@ -34,6 +35,6 @@ Route::get('/home', 'MyController@home')->name('home');
 Route::get('/me', 'MyController@WhoAmI');
 Route::get('/genres', 'MyController@getGenresIndex');
 Route::get('/genres/gettags', 'MyController@getTags');
-Route::post('/genres/getalbums', 'MyController@getAlbums');
+Route::get('/genres/{tag}', 'MyController@getAlbumsWithTag');
 
 Route::get('/inst', 'MyController@getInst');

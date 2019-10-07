@@ -64,18 +64,29 @@ class MyController extends Controller
 
 
 
-    public function index_album($al_id){
-        $al = PhotoAlbum::get();
-        $position = array_search($al_id, $al->map->id->toArray());
-        $al_info = $al->get($position);
-        if(!is_null($al->get($position-1)))
-            $prev_id = $al->get($position-1);
-        else
-            $prev_id = $al->get($position);
-        if(!is_null($al->get($position+1)))
-            $next_id = $al->get($position+1);
-        else
-            $next_id = $al->get($position);
+    public function index_album_desk($al_id){
+        $allAbout = $this->getAllAboutAlbum($al_id);
+        $view = view('al_index_desk')->with([
+            'al_info' => $allAbout["info"][0],
+            'photos_of_album' => $allAbout["photos"],
+            'tags' => $allAbout["tags"]
+        ]);
+        return $view;
+    }
+
+    public function index_album_mob($al_id){
+        $allAbout = $this->getAllAboutAlbum($al_id);
+        $view = view('al_index_mob')->with([
+            'al_info' => $allAbout["info"][0],
+            'photos_of_album' => $allAbout["photos"],
+            'tags' => $allAbout["tags"]
+        ]);
+        return $view;
+    }
+
+    private function getAllAboutAlbum($al_id){
+        $al_info = PhotoAlbum::where("id", $al_id)
+            ->get();
 
         $photos_of_album = Albums_photos::join("photos", "albums_photos.id_photo", "=", "photos.id")
             ->where('id_album', $al_id)
@@ -84,21 +95,7 @@ class MyController extends Controller
 
         $tags = DB::table("tags")->where("album_id", $al_id)->select("tag")->get();
 
-        $is_last = false;
-        $max_id = PhotoAlbum::find(DB::table('photo_albums')->max('id'));
-
-        //dd($al_info, $max_id);
-        if($al_info->id == $max_id->id) $is_last = true;
-
-        $view = view('new_al_index')->with([
-            'al_info' => $al_info,
-            'photos_of_album' => $photos_of_album,
-            'is_last'=>$is_last,
-            'next_id'=>$next_id->id,
-            'prev_id'=>$prev_id->id,
-            'tags' => $tags
-        ]);
-        return $view;
+        return array("info" => $al_info, "photos" => $photos_of_album, "tags" => $tags);
     }
 
     public function WhoAmI(){
@@ -108,6 +105,23 @@ class MyController extends Controller
     public function getGenresIndex(){
         $tags = $this->getTags();
         return view("/home/genres", ["tags" => $tags]);
+    }
+
+    public function getAlbumsWithTag($tag){
+        $tags = $this->getTags();
+        $albums = DB::select("
+            SELECT
+                al.id,
+                al.name as al_name,
+                al.title_photo_id,
+                ph.name as ph_name
+            FROM
+                photo_albums al
+            LEFT JOIN photos ph ON (al.title_photo_id = ph.id)
+            WHERE al.id IN (SELECT album_id FROM tags WHERE tag = '".$tag."')
+            ");
+        return view("/home/genres", ["tags" => $tags, "albums" => $albums]);
+
     }
 
     public function getAlbums(Request $request){
@@ -126,9 +140,5 @@ class MyController extends Controller
 
     public function getTags(){
         return DB::select("SELECT DISTINCT tag as text, COUNT(1) as weight FROM tags GROUP BY tag ORDER BY weight DESC");
-    }
-
-    public function getInst(){
-
     }
 }

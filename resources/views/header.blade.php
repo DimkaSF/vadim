@@ -16,17 +16,16 @@
             integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
             crossorigin="anonymous"></script>
 
-    {{--<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>--}}
     <title>Fuck yeah</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-sm navbar-light my_container">
-        <div class="d-sm-none">
+        <div class="d-sm-none fRight">
             <a href="/" class="navbar-brand">
                 <img src="{{asset("/img/logo.png")}}" alt="logo" width="100" />
             </a>
         </div>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="toggle nav">
+        <button class="navbar-toggler fLeft" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="toggle nav">
             <span class="navbar-toggler-icon "></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -70,12 +69,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script type="text/javascript">
-    $(document).ready(function () {
-        $('#before-load').fadeOut(1500);
-    });
-
+        $(document).ready(function () {
+            $('#before-load').fadeOut(1500);
+        });
     </script>
-
-
 </body>
 </html>
