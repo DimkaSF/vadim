@@ -42,7 +42,6 @@
                       @endforeach
                     </small>
                 </div>
-
             </div>
 
             <div class="row justify-content-center">
@@ -63,7 +62,7 @@
                 </div>
             </div>
             <div class="space30"></div>
-            <div class="row justify-content-center">
+            <div class="row ">
                 <div class="col-12" >
                     <ul class="list-inline text-center">
                         @foreach($photos_of_album as $photo)

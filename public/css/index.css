@@ -26,12 +26,12 @@
 .pad-b-20{
     padding-bottom: 20px !important;
 }
-
+/*
 .my_container{
     margin-left: 6%;
     margin-right: 6%;
 }
-
+*/
 .nopadding{
     padding: 0 !important;
     margin: 0 !important;
@@ -380,8 +380,6 @@ form{
     color:white;
     background: black;
     letter-spacing: 35px;
-    padding-left: 2px;
-    padding-right: 2px;
 }
 
 .footer .links a{
@@ -472,6 +470,7 @@ form{
     text-decoration: none;
     cursor:pointer;
     color:gray;
+
 }
 .taglink:hover{
     text-decoration: none;
@@ -487,7 +486,18 @@ form{
     text-align: center;
 }
 
+.navbar-brand{
+    padding-top:0;
+    padding-bottom: 0;
+    margin-right: 0;
+}
+
 @media (max-width: 425px){
+    .navbar-light .navbar-toggler{
+        border:none;
+        color:black;
+    }
+
     .carousel-div{
         height:300px;
     }
@@ -517,10 +527,9 @@ form{
         display:none;
     }
 
-    .col-12{
+    .container-fluid .col-12{
         padding-left: 0 !important;
         padding-right:  0 !important;
-        padding-top: 10px;
     }
 
     .footer{
@@ -528,6 +537,11 @@ form{
     }
     .footer .links{
         background: white;
+        font-size: 30px;
+        letter-spacing: 15px;
+        padding-left: 15px !important;
+        padding-top: 20px;
+        padding-bottom: 20px;
     }
 
     .footer .links a{
