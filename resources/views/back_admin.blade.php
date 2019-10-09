@@ -385,6 +385,7 @@
         var count = files.length;
         var name_ar = [];
 
+
         for(var i = 0; i<count; i++){
             name_ar = files[i].name.split(".");
             if($.inArray(name_ar[name_ar.length-1].toLowerCase(), ["jpeg", "jpg", "png"]) != -1){
@@ -392,7 +393,6 @@
             }
         }
     }
-
 
     function img_name(file, name, count) {
         var reader = new FileReader();
