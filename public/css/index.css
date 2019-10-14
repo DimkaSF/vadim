@@ -243,12 +243,6 @@ body{
 .form_style{
     width: 100%;
     height: 800px;
-    border: dashed gray 2px;
-}
-
-.form_style_dropped{
-    width: 100%;
-    height: 800px;
 }
 
 /*админка, просмотр фото когда удаляется альбом*/
@@ -490,6 +484,10 @@ form{
     padding-top:0;
     padding-bottom: 0;
     margin-right: 0;
+}
+
+.plupload_container{
+    min-height:600px;
 }
 
 @media (max-width: 425px){

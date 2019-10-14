@@ -26,7 +26,7 @@ class AdminController extends Controller
 {
     public function index(){
         $albums_names = PhotoAlbum::select("name", "id")->get();
-        $view = view('admin')->with([
+        $view = view('new_admin')->with([
             "albums_names" => $albums_names
         ]);
         return $view;
