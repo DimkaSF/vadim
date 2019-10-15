@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/base/jquery-ui.css" type="text/css" />
     <link rel="stylesheet" href="/js/plupload-2.3.6/js/jquery.ui.plupload/css/jquery.ui.plupload.css" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" type="text/css">
     <link rel="stylesheet" href="{{asset('css/index.css')}}">
     <script
             src="https://code.jquery.com/jquery-3.3.1.js"
@@ -24,6 +25,7 @@
     <script src="/js/jquery-ui-1.12.1/jquery-ui.min.js"></script>
     <script src="/js/plupload-2.3.6/js/plupload.full.min.js"></script>
     <script src="/js/plupload-2.3.6/js/jquery.ui.plupload/jquery.ui.plupload.min.js"></script>
+    <script type="text/javascript" src="js/plupload-2.3.6/js/i18n/ru.js"></script>
 
     <title>Админка</title>
 </head>
@@ -37,23 +39,36 @@
 
         <div class="row add_al">
             <div class="col-md-6">
-                <form action="/admin/send_photo" id="form_send_pic" type="POST" class="form_style dropzone">
-                    <input type="text" id="name_of_album" placeholder="Название альбома" required />
+                <form action="/admin/send_photo" id="formSendPic" type="POST" class="form_style dropzone">
+                    <input type="text" name="nameOfAlbum" placeholder="Название альбома" required />
                     <span class="space20"></span>
-                    <input type="file" id="pic" name="picture" accept="image/*" multiple required />
-                    <div class="space5"></div>
-                    <textarea name="album_desc" rows="3" cols="50" style="width: 100%" placeholder="Описание альбома"></textarea>
+                    <textarea name="albumDesc" rows="3" cols="50" style="width: 100%" placeholder="Описание альбома"></textarea>
                     <div class="helper">Максимум 255 символов</div>
                     <div class="space5"></div>
                     <input name="tags" type="text" />
                     <div class="space5"></div>
-                    <div id="uploader">
-                        <p>Your browser doesn't have Flash, Silverlight or HTML5 support.</p>
+                    <div id="containerUploader">
+                        <table id="preview" width="100%">
+                            <thead>
+                                <tr>
+                                    <td>Картинка</td>
+                                    <td>Имя</td>
+                                    <td>Размер</td>
+                                    <td></td>
+                                    <td>Выбрать как обложку</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
+                    <button id="pickFiles">Выбрать файлы</button>
+
+                    <input type="submit" />
                 </form>
             </div>
             <div class="col-md-6">
-                <div class="work_with_cover" style="width: 100%; max-height: 800px">
+                <div class="workWithCover" style="width: 100%; max-height: 800px">
 
                 </div>
             </div>

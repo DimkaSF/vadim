@@ -29,6 +29,7 @@ Route::group(['prefix'=>"admin", 'middleware'=>"auth"], function(){
     Route::post("/edit_al/new_cover", 'AdminController@save_new_cover');
     Route::post("/gettags", 'AdminController@getTags');
     Route::post("/save_new_tags", 'AdminController@saveNewTags');
+    Route::post("/savephoto", 'AdminController@savePhoto');
 });
 
 Route::get('/home', 'MyController@home')->name('home');

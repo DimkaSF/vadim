@@ -62,8 +62,6 @@ class AdminController extends Controller
                     $image->getClientOriginalExtension() == "jpg" ||
                     $image->getClientOriginalExtension() == "png"){
                     $filename = $request->name_of_album . '_photo_'. $count . '.' . $image->getClientOriginalExtension();
-    //            Пока что сохранение без изменение размера, над этим надо подумать. Изменение размера ->resize(ширина, высота)
-    //            можно ещё так же вставлять лого программно ->insert('путь до лого')
 
                 try{
                     $image = Image::make($image);
@@ -180,5 +178,10 @@ class AdminController extends Controller
         DB::table('tags')->insert($newtags);
 
         return array(0 , "Теги успешно обновлены.");
+    }
+
+
+    public function savePhoto(Request $request){
+        dd($request);
     }
 }
