@@ -155,6 +155,18 @@ class AdminController extends Controller
         return array("Обложка успешно обновлена!", '/img/'.$request->al_name.'/'.$request->al_name."_cover.jpg");
     }
 
+
+
+    public function getAlbumsNames(){
+        $albums = PhotoAlbum::select("name", "id")->get();
+        return array("result" => true, "content" => $albums);
+    }
+
+    public function getAlbumsPhotos(Request $request){
+        $photos = DB::select("SELECT id, name FROM photos WHERE id IN (SELECT id_photo FROM albums_photos WHERE id_album = ".$request->id.")");
+        return array("result" => true, "content" => $photos);
+    }
+
     public function getTags(Request $request){
         $tags = DB::table("tags")
                     ->select("tag")

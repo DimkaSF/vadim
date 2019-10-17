@@ -1,7 +1,7 @@
 var uploader;
 var pics = [];
+var ms;
 $(function(){
-    $(".add_al").hide();
     uploader = new plupload.Uploader({
         browse_button:$("#pickFiles")[0],
         container:$("#containerUploader")[0],
@@ -18,8 +18,6 @@ $(function(){
         url:"/admin/savephoto",
         init:{
             FilesAdded:function(up, files){
-
-
                 files = sortByKeyAsc(files, "name");
                 var _list = $("#preview").find("tbody:first");
                 $.each(files, function(index, file){
@@ -60,7 +58,6 @@ $(function(){
                                 crop:true
                             }
                         );
-
                     };
                     _img.load(file.getSource());
                 });
@@ -70,7 +67,30 @@ $(function(){
     });
     uploader.init();
 
+    var tags = [];
+    $.ajax({
+        type: 'POST',
+        url: "/admin/gettags",
+        headers:{
+            'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr("content")
+        },
+        processData: false,
+        contentType: false,
+        success: function (data) {
+            $.each(data, function(index, tag){
+                tags.push(tag.tag);
+            });
+        }
+    });
+    ms = $("#formSendPic input[name=tags]").magicSuggest({
+        placeholder: 'Выбери тег',
+        maxDropHeight: 145,
+        noSuggestionText: 'Такого тега ещё не было.'
+    });
+    ms.setData(tags);
 });
+
+
 
 function sortByKeyAsc(array, key) {
     return array.sort(function (a, b) {
@@ -97,6 +117,7 @@ $("#containerUploader").on("click", "*[class$=delPhoto]", function(){
 });
 
 $("#containerUploader").on("click", "*[class=cover]", function(){
+    $(".workWithCover").html("");
     var id = $(this).closest("tr").data("id");
     var ind = 0;
     for(var i=0, len=pics.length; i<len; i++){
@@ -109,10 +130,24 @@ $("#containerUploader").on("click", "*[class=cover]", function(){
     var reader = new FileReader();
     reader.readAsDataURL(_img);
     reader.onload = function (e) {
-        $(".workWithCover").append("<img src=\""+e.target.result+"\" width=\"100%\" />")
+        $(".workWithCover").append("<img id=\"cover\" src=\""+e.target.result+"\" />");
     }
-
 });
+
+$(".workWithCover").on('DOMSubtreeModified', function() {
+    var img = document.getElementById("cover");
+    cropper = new Cropper(img,{
+        viewMode: 3,
+        aspectRatio: 1/1,
+        dragMode: 'move',
+        cropBoxResizable: true,
+        ready(){
+            cropper.crop();
+            cropper.setCropBoxData({"width":920,"height":720});
+        }
+    });
+});
+
 
 $("#formSendPic").on("submit", function(e){
     e.preventDefault();

@@ -31,11 +31,6 @@
 </head>
 <body>
     <div class="container-fluid">
-        <div class="row mt-3" id="buttonsContainer">
-            <div class="col-md-4">
-                <button data-action="add_al" style="width: 100%">Добавить альбом</button>
-            </div>
-        </div>
 
         <div class="row add_al">
             <div class="col-md-6">
@@ -67,10 +62,8 @@
                     <input type="submit" />
                 </form>
             </div>
-            <div class="col-md-6">
-                <div class="workWithCover" style="width: 100%; max-height: 800px">
-
-                </div>
+            <div class="col-md-6 pt-5">
+                <div class="workWithCover"></div>
             </div>
         </div>
     </div>

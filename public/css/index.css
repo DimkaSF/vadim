@@ -246,10 +246,9 @@ body{
 }
 
 #containerUploader{
-    min-height: 400px;
+    height:700px;
     border:1px black dashed;
     overflow-y: scroll;
-    max-height: 500px;
 }
 
 #preview{
@@ -498,6 +497,16 @@ form{
 
 .plupload_container{
     min-height:600px;
+}
+
+.workWithCover{
+    max-height: 500px;
+    width:100%;
+}
+
+.workWithCover img{
+    width:100%;
+    height: auto;
 }
 
 @media (max-width: 425px){
