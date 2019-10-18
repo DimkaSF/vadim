@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/base/jquery-ui.css" type="text/css" />
     <link rel="stylesheet" href="/js/plupload-2.3.6/js/jquery.ui.plupload/css/jquery.ui.plupload.css" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" type="text/css">
-    <link rel="stylesheet" href="{{asset('css/index.css')}}">
     <script
             src="https://code.jquery.com/jquery-3.3.1.js"
             integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
@@ -21,6 +20,7 @@
     <script src='{{asset("js/magicsuggest/magicsuggest.js")}}'></script>
     <link rel="stylesheet" href="{{asset('js/magicsuggest/magicsuggest-min.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.4.3/cropper.min.css" >
+    <link rel="stylesheet" href="{{asset('css/index.css')}}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.4.3/cropper.min.js"></script>
     <script src="/js/jquery-ui-1.12.1/jquery-ui.min.js"></script>
     <script src="/js/plupload-2.3.6/js/plupload.full.min.js"></script>
@@ -35,8 +35,8 @@
         <div class="row add_al">
             <div class="col-md-6">
                 <form action="/admin/send_photo" id="formSendPic" type="POST" class="form_style dropzone">
-                    <input type="text" name="nameOfAlbum" placeholder="Название альбома" required />
-                    <span class="space20"></span>
+                    <input type="text" value="lll" name="nameOfAlbum" placeholder="Название альбома" style="width:100%" required />
+                    <div class="space5"></div>
                     <textarea name="albumDesc" rows="3" cols="50" style="width: 100%" placeholder="Описание альбома"></textarea>
                     <div class="helper">Максимум 255 символов</div>
                     <div class="space5"></div>
@@ -64,6 +64,19 @@
             </div>
             <div class="col-md-6 pt-5">
                 <div class="workWithCover"></div>
+
+                <div>
+                    <h2>Редактирование</h2>
+                    <input name="editAl" placeholder="Выбери альбом" />
+                    <div class="space5"></div>
+                    <input name="editPh" placeholder="Выбери фото" />
+                    <div class="space5"></div>
+                    <input name="editTag" placeholder="Теги" />
+                </div>
+                <div>
+                    <h2>Удаление</h2>
+                    <input name="delAl" placeholder="Выбери альбом" />
+                </div>
             </div>
         </div>
     </div>

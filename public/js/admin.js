@@ -1,6 +1,7 @@
 var uploader;
 var pics = [];
-var ms;
+var ms, ms_editAl, ms_editPh, ms_editTags, ms_del;
+var cropper;
 $(function(){
     uploader = new plupload.Uploader({
         browse_button:$("#pickFiles")[0],
@@ -42,7 +43,7 @@ $(function(){
                                 )
                         )
                         .append(
-                            $("<td class=\"cover\">На обложку</td>")
+                            $("<td class=\"onCover\">На обложку</td>")
                                 .css("cursor", "pointer")
                         )
                     .appendTo(_list);
@@ -88,6 +89,26 @@ $(function(){
         noSuggestionText: 'Такого тега ещё не было.'
     });
     ms.setData(tags);
+
+    ms_editAl = $("input[name=editAl]").magicSuggest({
+        placeholder: 'Выбери альбом',
+        maxDropHeight: 145,
+    });
+    ms_editPh = $("input[name=editPh]").magicSuggest({
+        placeholder: 'Выбери фото',
+        maxDropHeight: 145,
+    });
+    ms_editTags = $("input[name=editTag]").magicSuggest({
+        placeholder: 'Теги',
+        maxDropHeight: 145,
+    });
+
+    ms_del = $("input[name=delAl]").magicSuggest({
+        placeholder: 'Выбери альбом',
+        maxDropHeight: 145,
+    });
+
+
 });
 
 
@@ -116,7 +137,7 @@ $("#containerUploader").on("click", "*[class$=delPhoto]", function(){
     $(this).closest("tr").remove();
 });
 
-$("#containerUploader").on("click", "*[class=cover]", function(){
+$("#containerUploader").on("click", "*[class=onCover]", function(){
     $(".workWithCover").html("");
     var id = $(this).closest("tr").data("id");
     var ind = 0;
@@ -130,31 +151,58 @@ $("#containerUploader").on("click", "*[class=cover]", function(){
     var reader = new FileReader();
     reader.readAsDataURL(_img);
     reader.onload = function (e) {
-        $(".workWithCover").append("<img id=\"cover\" src=\""+e.target.result+"\" />");
-    }
-});
+        $(".workWithCover").append("<img id=\"myCover\" src=\""+e.srcElement.result+"\" />");
+    };
+    reader.onloadend = function(){
+        var cover = $(".workWithCover").find("#myCover")[0];
+        cropper = new Cropper(cover,{
+            viewMode: 3,
+            aspectRatio: 1/1,
+            dragMode: 'move',
+            cropBoxResizable: true,
+            ready(){
+                cropper.crop();
+                cropper.setCropBoxData({"width":920,"height":720});
+            }
+        });
+    };
 
-$(".workWithCover").on('DOMSubtreeModified', function() {
-    var img = document.getElementById("cover");
-    cropper = new Cropper(img,{
-        viewMode: 3,
-        aspectRatio: 1/1,
-        dragMode: 'move',
-        cropBoxResizable: true,
-        ready(){
-            cropper.crop();
-            cropper.setCropBoxData({"width":920,"height":720});
-        }
-    });
+
+
+
 });
 
 
 $("#formSendPic").on("submit", function(e){
     e.preventDefault();
     e.stopPropagation();
+    var albumId;
     var postData = $(this).serializeArray();
+    var imgData = cropper.getCroppedCanvas({width: 960, height:720}).toDataURL("image/jpeg", 1);
+    var imgSend = imgData.replace("data:image/jpeg;base64,", "");
 
-    uploader.settings.multipart_params.id = 1;
-    console.log(uploader);
+    postData.push({
+        name:"cover",
+        value:imgSend
+    });
+    postData.push({
+        name:"_token",
+        value:$('meta[name="csrf-token"]').attr('content')
+    });
+    console.log(postData);
+
+
+    /*$.post(
+        "/admin/createalbum",
+        postData,
+        function(data){
+            if(data.result){
+                albumId = data.id;
+            }
+        }
+    );*/
+
+    uploader.settings.multipart_params.id = 56;
+    uploader.settings.multipart_params.albumName = "LLL";
     uploader.start();
 });

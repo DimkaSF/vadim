@@ -194,6 +194,57 @@ class AdminController extends Controller
 
 
     public function savePhoto(Request $request){
-        dd($request);
+        $image = $request->file('file');
+        $allowExt = ["jpeg", "jpg", "png"];
+        if(in_array(strtolower($image->getClientOriginalExtension()), $allowExt)){
+                $filename = md5($image->getClientOriginalName()). "." . strtolower($image->getClientOriginalExtension());
+            try{
+                $image = Image::make($image);
+                $image->save(public_path('img/'.$request->albumName.'/'.$filename));
+                $photo = new Photo();
+                $photo->name = $filename;
+                $photo->save();
+
+                $connection = new Albums_photos();
+                $connection->id_album = $request->id;
+                $connection->id_photo = $photo->id;
+                $connection->save();
+            }
+            catch(exc $e){
+
+            }
+        }
+    }
+
+    public function createAlbum(Request $request){
+        $album = new PhotoAlbum();
+        $album->name = $request->nameOfAlbum;
+        $album->description = $request->albumDesc;
+        $album->save();
+
+        File::makeDirectory(public_path('img/').$request->nameOfAlbum);
+        $image = Image::make(base64_decode($request["cover"]));
+        $image->save(public_path('img/'.$request->nameOfAlbum.'/'.$request->nameOfAlbum."_cover.jpg"));
+
+        $photo_cover = new Photo();
+        $photo_cover->name = $request->nameOfAlbum."_cover.jpg";
+        $photo_cover->save();
+
+        $connection_cover = new Albums_photos();
+        $connection_cover->id_album = $album->id;
+        $connection_cover->id_photo = $photo_cover->id;
+        $connection_cover->save();
+
+        PhotoAlbum::where('id', $album->id)
+            ->update(['title_photo_id' => $photo_cover->id]);
+
+        $tagsdb = array();
+        foreach ($request->tags as $key => $tag) {
+           $tagsdb[$key] = ["album_id" => $album->id, "tag" => $tag];
+        }
+
+        DB::table('tags')->insert($tagsdb);
+
+        return array("result"=>true, "id" => $album->id, "albumName" => $request->nameOfAlbum);
     }
 }
