@@ -34,7 +34,10 @@ class AdminController extends Controller
 
     public function save_photo(Request $request){
         $all_images = $request->allFiles();
-
+        usort($all_images, function($a, $b){
+            return ($a->getClientOriginalName() < $b->getClientOriginalName()) ? -1 : 1;
+        });
+        dd($all_images);
         $album = new PhotoAlbum();
         $album->name = $request->name_of_album;
         $album->description = $request->album_desc;
@@ -194,7 +197,8 @@ class AdminController extends Controller
 
 
     public function savePhoto(Request $request){
-        $image = $request->file('file');
+        dd($request);
+        /*$image = $request->file('file');
         $allowExt = ["jpeg", "jpg", "png"];
         if(in_array(strtolower($image->getClientOriginalExtension()), $allowExt)){
                 $filename = md5($image->getClientOriginalName()). "." . strtolower($image->getClientOriginalExtension());
@@ -213,7 +217,7 @@ class AdminController extends Controller
             catch(exc $e){
 
             }
-        }
+        }*/
     }
 
     public function createAlbum(Request $request){

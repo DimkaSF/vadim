@@ -509,6 +509,14 @@ form{
     height: auto;
 }
 
+.preloader_admin{
+    top:0;
+    left:0;
+    position:absolute;
+    background-color: black;
+    height: 500px;
+}
+
 @media (max-width: 425px){
     .navbar-light .navbar-toggler{
         border:none;

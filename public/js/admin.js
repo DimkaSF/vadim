@@ -8,6 +8,7 @@ $(function(){
         container:$("#containerUploader")[0],
         drop_element:$("#containerUploader")[0],
         max_retries:0,
+        sortable: true,
         filters:{
             max_file_size:"16mb",
             mime_types:"image/jpg,image/jpeg,image/png",
@@ -26,6 +27,7 @@ $(function(){
                     var _row = $("<tr></tr>")
                         .attr("id",file.id)
                         .data("id",file.id)
+                        .attr("num", index)
                         .append(
                             $("<td></td>")
                         )
@@ -90,19 +92,6 @@ $(function(){
     });
     ms.setData(tags);
 
-    ms_editAl = $("input[name=editAl]").magicSuggest({
-        placeholder: 'Выбери альбом',
-        maxDropHeight: 145,
-    });
-    ms_editPh = $("input[name=editPh]").magicSuggest({
-        placeholder: 'Выбери фото',
-        maxDropHeight: 145,
-    });
-    ms_editTags = $("input[name=editTag]").magicSuggest({
-        placeholder: 'Теги',
-        maxDropHeight: 145,
-    });
-
     ms_del = $("input[name=delAl]").magicSuggest({
         placeholder: 'Выбери альбом',
         maxDropHeight: 145,
@@ -137,6 +126,14 @@ $("#containerUploader").on("click", "*[class$=delPhoto]", function(){
     $(this).closest("tr").remove();
 });
 
+$("#containerUploader").on("click", "*[class=upPic]", function(){
+    var _row = $(this).closest("tr");
+    var currentPic = uploader.getFile(_row.attr("id"));
+
+    console.log(uploader.getFiles());
+    _row.prev().insertAfter(_row);
+});
+
 $("#containerUploader").on("click", "*[class=onCover]", function(){
     $(".workWithCover").html("");
     var id = $(this).closest("tr").data("id");
@@ -166,10 +163,6 @@ $("#containerUploader").on("click", "*[class=onCover]", function(){
             }
         });
     };
-
-
-
-
 });
 
 
@@ -201,6 +194,7 @@ $("#formSendPic").on("submit", function(e){
             }
         }
     );*/
+
 
     uploader.settings.multipart_params.id = 56;
     uploader.settings.multipart_params.albumName = "LLL";

@@ -101,6 +101,7 @@
     </div>
 </div>
 
+<div class="preloader_admin" style="display:none"></div>
 
 
 <script type="text/javascript">
@@ -348,7 +349,7 @@
     }).on('drop', function(e) {
         $("#form_send_pic").removeClass("form_style").addClass("form_style_dropped");
         $('INPUT[id="pic"]')[0].files = e.originalEvent.dataTransfer.files;
-        readURL(e.originalEvent.dataTransfer.files);
+        readURL($('INPUT[id="pic"]')[0].files);
     });
 
     $('INPUT[type="file"]').change(function () {
@@ -364,7 +365,7 @@
 
     $("#form_send_pic").on("click", "*[data-click]", function(){
         $(".work_with_cover").html("");
-        $(".work_with_cover").append('<img id="cover" src = "'+$(this).find('img:first').attr('src')+'" width="100%">');
+        $(".work_with_cover").append('<img id="cover" src = "'+$(this).attr('src')+'" width="100%">');
 
         var img = document.getElementById("cover");
 
@@ -384,24 +385,29 @@
         $('#image_to_upload').empty();
         var count = files.length;
         var name_ar = [];
+        var preloader = $(".preloader_admin");
+        preloader.css("display", "block");
         for(var i = 0; i<count; i++){
             name_ar = files[i].name.split(".");
             if($.inArray(name_ar[name_ar.length-1].toLowerCase(), ["jpeg", "jpg", "png"]) != -1){
-                img_name(files[i], files[i].name, i);
+                img_name(files[i], i);
             }
         }
+        preloader.css("display", "block");
     }
 
-
-    function img_name(file, name, count) {
+    function img_name(file, count) {
         var reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = function (e) {
-            $('<div id="parent'+count.toString()+'" class="col-md-3 my-auto" data-click=\"cover\"></div>').appendTo('#image_to_upload');
-            $('#parent'+count.toString()).prepend('<img class="ready_to_upload" ' +
-                'src="'+e.target.result+'" width="100%" />');
-            /*$('#parent'+count.toString()).append('<input name="'+name+'" type="checkbox" ' +
-                ' onchange="cover($(this))"/> Выбрать как обложку');*/
+            $('<div id="parent'+count.toString()+'" class="col-md-3 my-auto"  data-number=\"'+count+'\"></div>')
+                .append(
+                    $('<img class="ready_to_upload" data-click=\"cover\" src="'+e.target.result+'" width="100%" />')
+                )
+                .append(
+                    $("<label>удалить</label>")
+                )
+            .appendTo('#image_to_upload');
         }
     }
 
@@ -420,9 +426,11 @@
         var link = $(this).attr('action');
         var album_name = $('#name_of_album').val();
         var album_desc = $("textarea[name=album_desc]").val();
-        for(var i=0; i < $('#pic').get(0).files.length; i++){
+
+        for(var i=0; i < $('#pic')[0].files.length; i++){
             fd.append('pic'+i.toString(), $('#pic').get(0).files[i]);
         }
+
         fd.append('name_of_album', album_name);
         fd.append('album_desc', album_desc);
         var tags = [];
@@ -435,6 +443,7 @@
         var imgData = cropper.getCroppedCanvas({width: 960, height:720}).toDataURL("image/jpeg", 1);
         var test = imgData.replace("data:image/jpeg;base64,", "");
         fd.append('cover', test);
+
         $.ajax({
             type: 'POST',
             url: link,

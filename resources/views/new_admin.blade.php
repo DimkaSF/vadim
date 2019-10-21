@@ -66,14 +66,6 @@
                 <div class="workWithCover"></div>
 
                 <div>
-                    <h2>Редактирование</h2>
-                    <input name="editAl" placeholder="Выбери альбом" />
-                    <div class="space5"></div>
-                    <input name="editPh" placeholder="Выбери фото" />
-                    <div class="space5"></div>
-                    <input name="editTag" placeholder="Теги" />
-                </div>
-                <div>
                     <h2>Удаление</h2>
                     <input name="delAl" placeholder="Выбери альбом" />
                 </div>
