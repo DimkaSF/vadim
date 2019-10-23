@@ -246,7 +246,7 @@ body{
 }
 
 #containerUploader{
-    height:700px;
+    height:550px;
     border:1px black dashed;
     overflow-y: scroll;
 }
@@ -516,6 +516,40 @@ form{
     background-color: black;
     height: 500px;
 }
+
+#exit{
+    float:right;
+    color: red;
+}
+
+#uploadProgress{
+    text-align: center;
+    vertical-align: middle;
+    margin-top: 35%;
+    font-size: 25px;
+}
+
+.ui-dialog{
+    z-index:9999;
+}
+
+#finalDialog{
+    font-size: 14px;
+}
+
+.no-close .ui-dialog-titlebar-close {
+  display: none;
+}
+
+#containerUploader{
+    text-align: center;
+}
+
+#containerUploader tr:hover{
+    background: gray;
+}
+
+
 
 @media (max-width: 425px){
     .navbar-light .navbar-toggler{

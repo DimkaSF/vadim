@@ -197,27 +197,40 @@ class AdminController extends Controller
 
 
     public function savePhoto(Request $request){
-        dd($request);
-        /*$image = $request->file('file');
-        $allowExt = ["jpeg", "jpg", "png"];
-        if(in_array(strtolower($image->getClientOriginalExtension()), $allowExt)){
-                $filename = md5($image->getClientOriginalName()). "." . strtolower($image->getClientOriginalExtension());
-            try{
-                $image = Image::make($image);
-                $image->save(public_path('img/'.$request->albumName.'/'.$filename));
-                $photo = new Photo();
-                $photo->name = $filename;
-                $photo->save();
+        $image = $request->file('file');
+        $originalName = $image->getClientOriginalName();
+        $pos = array_search($originalName, $request->order);
+        if($pos == 0 || $pos != false){
+            $allowExt = ["jpeg", "jpg", "png"];
+            if(in_array(strtolower($image->getClientOriginalExtension()), $allowExt)){
+                $filename = strval($pos) . md5($originalName). "." . strtolower($image->getClientOriginalExtension());
+                try{
+                    $image = Image::make($image);
+                    $image->save(public_path('img/'.$request->albumName.'/'.$filename));
+                    $photo = new Photo();
+                    $photo->name = $filename;
+                    $photo->save();
 
-                $connection = new Albums_photos();
-                $connection->id_album = $request->id;
-                $connection->id_photo = $photo->id;
-                $connection->save();
+                    $connection = new Albums_photos();
+                    $connection->id_album = $request->id;
+                    $connection->id_photo = $photo->id;
+                    $connection->save();
+                    return array("result" => true);
+                }
+                catch(exc $e){
+                    return array(
+                        "result" => "false",
+                        "errors" => $e
+                    );
+                }
             }
-            catch(exc $e){
-
-            }
-        }*/
+        }
+        else{
+            return array(
+                "result" => "false",
+                "errors" => "Такой файл не отправлялся"
+            );
+        }
     }
 
     public function createAlbum(Request $request){
@@ -243,10 +256,11 @@ class AdminController extends Controller
             ->update(['title_photo_id' => $photo_cover->id]);
 
         $tagsdb = array();
-        foreach ($request->tags as $key => $tag) {
-           $tagsdb[$key] = ["album_id" => $album->id, "tag" => $tag];
+        if($request->tags != null){
+            foreach ($request->tags as $key => $tag) {
+                $tagsdb[$key] = ["album_id" => $album->id, "tag" => $tag];
+            }
         }
-
         DB::table('tags')->insert($tagsdb);
 
         return array("result"=>true, "id" => $album->id, "albumName" => $request->nameOfAlbum);

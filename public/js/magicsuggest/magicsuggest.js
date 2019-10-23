@@ -652,8 +652,7 @@
                 ESC: 27,
                 SPACE: 32,
                 UPARROW: 38,
-                DOWNARROW: 40,
-                COMMA: 188
+                DOWNARROW: 40
             };
 
         var self = {

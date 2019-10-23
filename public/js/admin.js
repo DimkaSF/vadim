@@ -1,8 +1,10 @@
 var uploader;
 var pics = [];
-var ms, ms_editAl, ms_editPh, ms_editTags, ms_del;
+var ms, ms_del;
 var cropper;
+var picCount=0;
 $(function(){
+
     uploader = new plupload.Uploader({
         browse_button:$("#pickFiles")[0],
         container:$("#containerUploader")[0],
@@ -20,14 +22,17 @@ $(function(){
         url:"/admin/savephoto",
         init:{
             FilesAdded:function(up, files){
+                console.log(up);
+                $("#before-load").fadeIn(1500);
                 files = sortByKeyAsc(files, "name");
                 var _list = $("#preview").find("tbody:first");
+                $("#uploadProgress").text("Создаём очередь. Ожидайте.");
                 $.each(files, function(index, file){
                     pics.push(file);
                     var _row = $("<tr></tr>")
                         .attr("id",file.id)
                         .data("id",file.id)
-                        .attr("num", index)
+                        .attr("data-name", file.name)
                         .append(
                             $("<td></td>")
                         )
@@ -48,6 +53,14 @@ $(function(){
                             $("<td class=\"onCover\">На обложку</td>")
                                 .css("cursor", "pointer")
                         )
+                        .append(
+                            $("<td data-move=\"up\"><i class=\"fa fa-arrow-up\" aria-hidden=\"true\"></i></td>")
+                                .css("cursor", "pointer")
+                        )
+                        .append(
+                            $("<td data-move=\"down\"><i class=\"fa fa-arrow-down\" aria-hidden=\"true\"></i></td>")
+                                .css("cursor", "pointer")
+                        )
                     .appendTo(_list);
                     var _img = new moxie.image.Image();
                     _img.onload = function(){
@@ -57,18 +70,41 @@ $(function(){
                                 width:50,
                                 height:50,
                                 type:"image/jpeg",
-                                quality:100,
+                                quality:50,
                                 crop:true
                             }
                         );
+                        if(this.name == pics[pics.length-1].name){
+                            $("#before-load").fadeOut(1500);
+                            $("#uploadProgress").text("");
+                        }
                     };
                     _img.load(file.getSource());
                 });
+                _list.append(
+                    $("<tr style=\"border:1px solid black\"></tr>")
+                        .append("<td colspan=\"3\">Всего файлов : "+files.length+"</td>")
+                        .append("<td colspan=\"4\">Общий объём : "+plupload.formatSize(up.total.size)+"</td>")
+                )
+            },
+            UploadComplete:function(up, files){
+                $("#before-load").fadeOut(1500);
+                $("#finalDialog").dialog( "open" );
+            },
+            FileUploaded:function(up, file, result){
+                if(result.response){
+                    $("#uploadProgress").text("").text(file.name + " загружен. Осталось: " + picCount);
+                    picCount = picCount - 1;
+                }
+                else{
+                    $("#uploadProgress").text("").text(file.name + " - тут ошибка...что то пошло не так");
+                }
             }
         },
-        headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')}
+        headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
     });
     uploader.init();
+
 
     var tags = [];
     $.ajax({
@@ -94,10 +130,28 @@ $(function(){
 
     ms_del = $("input[name=delAl]").magicSuggest({
         placeholder: 'Выбери альбом',
-        maxDropHeight: 145,
+        maxDropHeight: 145
     });
+    $( "#tabs" ).tabs();
 
+});
 
+$("#finalDialog").dialog({
+    resizable: false,
+    height: "auto",
+    width: 400,
+    modal: true,
+    draggable: false,
+    autoOpen: false,
+    dialogClass: "no-close",
+    buttons: {
+        "На сайт": function() {
+            window.location.href = "/";
+        },
+        "Остаться в админке": function() {
+            window.location.reload();
+        }
+    }
 });
 
 
@@ -126,12 +180,20 @@ $("#containerUploader").on("click", "*[class$=delPhoto]", function(){
     $(this).closest("tr").remove();
 });
 
-$("#containerUploader").on("click", "*[class=upPic]", function(){
+$("#containerUploader").on("click", "*[data-move]", function(){
     var _row = $(this).closest("tr");
-    var currentPic = uploader.getFile(_row.attr("id"));
+    var direction = $(this).data("move");
+    switch(direction){
+        case "up":{
+            _row.prev().insertAfter(_row);
+            break;
+        }
+        case "down":{
+            _row.insertAfter(_row.next());
+            break
+        }
+    }
 
-    console.log(uploader.getFiles());
-    _row.prev().insertAfter(_row);
 });
 
 $("#containerUploader").on("click", "*[class=onCover]", function(){
@@ -165,12 +227,32 @@ $("#containerUploader").on("click", "*[class=onCover]", function(){
     };
 });
 
+$("textarea[name=albumDesc]").on("keyup", function(){
+    if($(this).val().length <= 255){
+        $(".helper").text("Осталось символов:" + (255-$(this).val().length));
+    }
+    else{
+        $(".helper").text("Вадик, слишком много символов. Крактость - сестра  таланта :)");
+    }
+});
+
+$("#exit").on("click", function(e){
+    e.preventDefault();
+    window.location.href = "/";
+});
 
 $("#formSendPic").on("submit", function(e){
     e.preventDefault();
     e.stopPropagation();
-    var albumId;
+    if(!cropper){
+        alert("Обложка не выбрана.");
+        return false;
+    }
+    $("#before-load").fadeIn(1500);
+    var albumId, albumName;
+    var order = [];
     var postData = $(this).serializeArray();
+
     var imgData = cropper.getCroppedCanvas({width: 960, height:720}).toDataURL("image/jpeg", 1);
     var imgSend = imgData.replace("data:image/jpeg;base64,", "");
 
@@ -182,7 +264,6 @@ $("#formSendPic").on("submit", function(e){
         name:"_token",
         value:$('meta[name="csrf-token"]').attr('content')
     });
-    console.log(postData);
 
 
     /*$.post(
@@ -191,12 +272,19 @@ $("#formSendPic").on("submit", function(e){
         function(data){
             if(data.result){
                 albumId = data.id;
+                albumName = data.albumName;
             }
         }
-    );*/
+    );
 
 
-    uploader.settings.multipart_params.id = 56;
-    uploader.settings.multipart_params.albumName = "LLL";
-    uploader.start();
+    $("#containerUploader>table:first>tbody:first").find("tr").each(function(){
+        order.push($(this).data("name"));
+    });
+    picCount = pics.length;
+    uploader.settings.multipart_params.id = albumId;
+    uploader.settings.multipart_params.albumName = albumName;
+    uploader.settings.multipart_params.order = order;
+    uploader.start();*/
+
 });

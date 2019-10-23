@@ -91,6 +91,7 @@ class MyController extends Controller
         $photos_of_album = Albums_photos::join("photos", "albums_photos.id_photo", "=", "photos.id")
             ->where('id_album', $al_id)
             ->where("name", "NOT LIKE", "%cover%")
+            ->orderBy('name', 'ASC')
             ->get();
 
         $tags = DB::table("tags")->where("album_id", $al_id)->select("tag")->get();
