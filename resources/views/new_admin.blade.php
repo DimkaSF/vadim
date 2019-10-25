@@ -44,14 +44,14 @@
                 <div class="row add_al">
                     <div class="col-md-6">
                         <form action="/admin/send_photo" id="formSendPic" type="POST" class="form_style dropzone">
-                            <input type="text" value="lll" name="nameOfAlbum" placeholder="Название альбома" style="width:100%" required />
+                            <input type="text" name="nameOfAlbum" placeholder="Название альбома" style="width:100%" required />
                             <div class="space5"></div>
                             <textarea name="albumDesc" rows="3" cols="50" style="width: 100%" placeholder="Описание альбома"></textarea>
                             <div class="helper">Максимум 255 символов</div>
                             <div class="space5"></div>
                             <input name="tags" type="text" />
                             <div class="space5"></div>
-                            <div id="containerUploader">
+                            <div id="containerUploader" >
                                 <table id="preview" width="100%">
                                     <thead>
                                         <tr>

@@ -4,7 +4,6 @@ var ms, ms_del;
 var cropper;
 var picCount=0;
 $(function(){
-
     uploader = new plupload.Uploader({
         browse_button:$("#pickFiles")[0],
         container:$("#containerUploader")[0],
@@ -37,7 +36,7 @@ $(function(){
                             $("<td></td>")
                         )
                         .append(
-                            $("<td>"+file.name+"</td>")
+                            $("<td style=\"word-break: break-all;\">"+file.name+"</td>")
                         )
                         .append(
                             $("<td>"+plupload.formatSize(file.size)+"</td>")
@@ -128,13 +127,52 @@ $(function(){
     });
     ms.setData(tags);
 
+    var albumsNames = [];
+    $.ajax({
+        type: 'GET',
+        url: "/admin/getalbmsnames",
+        headers:{
+            'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr("content")
+        },
+        processData: false,
+        contentType: false,
+        success: function (data) {
+            $.each(data.content, function(index, al){
+                albumsNames.push(al);
+            });
+        }
+    });
+
     ms_del = $("input[name=delAl]").magicSuggest({
         placeholder: 'Выбери альбом',
-        maxDropHeight: 145
+        maxDropHeight: 145,
+        maxSelection: 1
     });
+    $(ms_del).on('selectionchange', function(e,m){
+        if(confirm("Точно удалить этот альбом?")){
+            $.ajax({
+                type: 'GET',
+                url: "/admin/delete_al_"+this.getValue()[0],
+                headers:{
+                    'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr("content")
+                },
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    if(data.result){
+                        alert("Удаление прошло успешно!");
+                        window.location.reload();
+                    }
+                }
+            });
+        }
+    });
+    ms_del.setData(albumsNames);
     $( "#tabs" ).tabs();
 
 });
+
+
 
 $("#finalDialog").dialog({
     resizable: false,
@@ -266,25 +304,29 @@ $("#formSendPic").on("submit", function(e){
     });
 
 
-    /*$.post(
+    $.post(
         "/admin/createalbum",
         postData,
         function(data){
             if(data.result){
-                albumId = data.id;
-                albumName = data.albumName;
+                albumId = data.content.id;
+                albumName = data.content.albumName;
+                $("#containerUploader>table:first>tbody:first").find("tr").each(function(){
+                    order.push($(this).data("name"));
+                });
+                picCount = pics.length;
+                uploader.settings.multipart_params.id = albumId;
+                uploader.settings.multipart_params.albumName = albumName;
+                uploader.settings.multipart_params.order = order;
+                uploader.start();
+            }
+            else{
+                alert("Загрузка альбом прошла неудачно.");
             }
         }
     );
 
 
-    $("#containerUploader>table:first>tbody:first").find("tr").each(function(){
-        order.push($(this).data("name"));
-    });
-    picCount = pics.length;
-    uploader.settings.multipart_params.id = albumId;
-    uploader.settings.multipart_params.albumName = albumName;
-    uploader.settings.multipart_params.order = order;
-    uploader.start();*/
+
 
 });

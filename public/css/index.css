@@ -53,7 +53,6 @@
 
 html{
     height: 100%;
-
 }
 
 body{
@@ -63,48 +62,6 @@ body{
 }
 
 
-/* old styles
-#slide_down {
-    display:none;
-    height: inherit;
-    overflow: auto;
-}
-
-#slide_down .row{
-    margin-left: 0;
-    margin-right: 0;
-}
-
-
-.name_of_album_in_index{
-    position: absolute;
-    padding-left: 3%;
-    padding-top: 1%;
-}
-
-.album_description_container{
-    text-align: center;
-    font-size: 20px;
-}
-.album_description{
-    margin-top: 0px;
-    margin-bottom: 0px;
-}
-
-.list-inline{
-    margin: auto;
-    padding-left: 10px !important;
-    text-align: center;
-}
-
-.close_album{
-    text-align: end;
-    padding-right: 3%;
-    padding-top: 1%;
-}*/
-
-
-
 #slide_down .row{
     margin-left: 0;
     margin-right: 0;
@@ -112,8 +69,12 @@ body{
 
 #slide_down .al_name{
     font-family: "room";
-    font-size: 8vh;
+    font-size: 7vh;
 }
+
+/*.carousel-div img{
+    height: 100%;
+}*/
 
 #photo_car img{
     margin:auto;
@@ -122,6 +83,8 @@ body{
 #slide_down .album_description{
     font-family: "room";
     font-size: 3vh;
+    padding-left: 20%;
+    padding-right: 20%;
 }
 
 #slide_down .close{
@@ -129,18 +92,10 @@ body{
     color:gray;
 }
 
-.carousel-div{
-    margin-top: 0 !important;
-}
-
-.carousel-div img{
-    height: 100%;
-}
-
 .list-inline-item img{
   object-fit: cover;
-  width: 60px;
-  height: 40px;
+  width: 50px;
+  height: 30px;
 }
 
 #slide_down small{
@@ -167,6 +122,7 @@ body{
 
 
 .carousel-div{
+    margin-top: 0 !important;
     margin: auto;
     text-align: center;
     width: 800px;
@@ -549,7 +505,10 @@ form{
     background: gray;
 }
 
-
+.minipicul{
+    padding-left: 20% !important;
+    padding-right: 20%;
+}
 
 @media (max-width: 425px){
     .navbar-light .navbar-toggler{

@@ -20,6 +20,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Exception\NotReadableException as exc;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Filesystem\Filesystem;
 
 
 class AdminController extends Controller
@@ -121,14 +122,16 @@ class AdminController extends Controller
     }
 
     public function delete_album($id){
+        $alName = PhotoAlbum::where("id", $id)->select("name")->first();
         PhotoAlbum::where("id", $id)->delete();
         DB::delete("delete from photos where id in (select id_photo from albums_photos where id_album = ".$id.")");
         Albums_photos::where("id_album", $id)->delete();
         DB::delete("delete from tags where album_id = ".$id);
+        File::deleteDirectory(public_path('/img/'.$alName->name));
+        return array("result" => true);
     }
 
     public function delete_one_photo($al_id, $ph_id){
-
         Albums_photos::where("id_album", $al_id)
                 ->where("id_photo", $ph_id)
                 ->delete();
@@ -161,7 +164,7 @@ class AdminController extends Controller
 
 
     public function getAlbumsNames(){
-        $albums = PhotoAlbum::select("name", "id")->get();
+        $albums = PhotoAlbum::select("name", "id")->orderBy("name", "ASC")->get();
         return array("result" => true, "content" => $albums);
     }
 
@@ -203,10 +206,11 @@ class AdminController extends Controller
         if($pos == 0 || $pos != false){
             $allowExt = ["jpeg", "jpg", "png"];
             if(in_array(strtolower($image->getClientOriginalExtension()), $allowExt)){
-                $filename = strval($pos) . md5($originalName). "." . strtolower($image->getClientOriginalExtension());
+                $prefix = (($pos < 10)?"00".strval($pos+1):"0".strval($pos+1));
+                $filename = $prefix . md5($originalName). "." . strtolower($image->getClientOriginalExtension());
                 try{
                     $image = Image::make($image);
-                    $image->save(public_path('img/'.$request->albumName.'/'.$filename));
+                    $image->save(public_path('img/'.$request->albumName.'/'.$filename), 50);
                     $photo = new Photo();
                     $photo->name = $filename;
                     $photo->save();
@@ -263,6 +267,6 @@ class AdminController extends Controller
         }
         DB::table('tags')->insert($tagsdb);
 
-        return array("result"=>true, "id" => $album->id, "albumName" => $request->nameOfAlbum);
+        return array("result"=>true, "content" => array("id" => $album->id, "albumName" => $request->nameOfAlbum));
     }
 }
