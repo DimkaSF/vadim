@@ -95,7 +95,6 @@ class MyController extends Controller
             ->get();
 
         $tags = DB::table("tags")->where("album_id", $al_id)->select("tag")->get();
-
         return array("info" => $al_info, "photos" => $photos_of_album, "tags" => $tags);
     }
 

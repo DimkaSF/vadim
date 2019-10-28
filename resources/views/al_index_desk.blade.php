@@ -5,7 +5,6 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="{{asset('css/index.css')}}">
 
@@ -22,6 +21,7 @@
           crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="{{asset('js/moxie.js')}}"></script>
 </head>
 <body>
     <div id="before-load">
@@ -47,7 +47,7 @@
                 <div id="photo_car" class="carousel slide" data-ride="carousel" style="width:90%;">
                     <div class="carousel-inner">
                         @foreach($photos_of_album as $photo)
-                            <div class=" carousel-item carousel-div @if($loop->index == 0) active @endif ">
+                            <div class="carousel-item carousel-div @if($loop->index == 0) active @endif">
                                 <img class="carousel-image d-block" src="{{url('img/'.$al_info->name.'/'.$photo->photo->name)}}" width="100%" height="100%"/>
                             </div>
                         @endforeach
@@ -60,23 +60,23 @@
             </div>
             <div class="space30"></div>
             <div class="row ">
-                <div class="col-12" >
+                <div class="col-12 colMiniPicUlParent">
+                    <span>Назад</span>
                     <ul class="list-inline text-center minipicul">
                         @foreach($photos_of_album as $photo)
                             <li class="list-inline-item" style="padding-top: 5px;" data-target="#photo_car" data-slide-to="{{$loop->index}}">
-                                <img src="{{url('img/'.$al_info->name.'/'.$photo->photo->name)}}">
+                                <img src="{{url('img/'.$al_info->name.'/'.$photo->photo->name)}}" >
                             </li>
                         @endforeach
                     </ul>
+                    <span id="forward">Вперёд</span>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-12 text-center">
                     <p class="album_description">
-                        @if($al_info->description == "")
-                            Описание отсутствует
-                        @else
+                        @if($al_info->description != "")
                             {{$al_info->description}}
                         @endif
                     </p>
@@ -88,14 +88,39 @@
     </div>
 
     <script type="text/javascript" lang="javascript">
+        /*$(function(){
+            var ind = 0;
+            $("#photo_car").find("img").each(function(){
+                var _img = new moxie.image.Image();
+                _img.onload = function(){
+                    this.embed(
+                        $(".list-inline-item[data-slide-to=\""+ind+"\"]")[0],
+                        {
+                            width:50,
+                            height:50,
+                            type:"image/jpeg",
+                            quality:50,
+                            crop:true
+                        }
+                    );
+                };
+                console.log($(this).attr("src"));
+                _img.load($(this).attr("src"));
+                ind += 1;
+            });
+        });*/
 
         $(window).on('load', function(){
             $('#before-load').find('i').fadeOut().end().delay(400).fadeOut('slow');
-            $('#slide_down').slideDown(1000);
         });
 
         $(".carousel-image").on("click", function(){
             $(".carousel-control-next").click();
+        });
+
+        $("#forward").on("click", function(){
+            var leftPos = $('.minipicul').scrollLeft();
+            $(".minipicul").animate({scrollLeft: leftPos + 260});
         });
     </script>
 </body>

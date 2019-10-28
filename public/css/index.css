@@ -93,9 +93,8 @@ body{
 }
 
 .list-inline-item img{
-  object-fit: cover;
-  width: 50px;
-  height: 30px;
+    width: 40px;
+    height: auto;
 }
 
 #slide_down small{
@@ -505,9 +504,14 @@ form{
     background: gray;
 }
 
+.colMiniPicUlParent{
+    padding-left: 10% !important;
+    padding-right: 10% !important;
+}
+
 .minipicul{
-    padding-left: 20% !important;
-    padding-right: 20%;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 @media (max-width: 425px){
