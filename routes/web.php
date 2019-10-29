@@ -14,7 +14,6 @@
 Route::get('/', 'MyController@home');
 
 Route::get('/album_{id}', 'MyController@index_album_desk');
-Route::get('/m_album_{id}', 'MyController@index_album_mob');
 Route::get('/login', 'LoginController@showLogin')->name('showLogin');
 Route::post('/login', 'LoginController@doLogin')->name('doLogin');
 Route::get('/logout', 'LoginController@LogOut');

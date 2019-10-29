@@ -61,15 +61,15 @@
             <div class="space30"></div>
             <div class="row ">
                 <div class="col-12 colMiniPicUlParent">
-                    <span>Назад</span>
-                    <ul class="list-inline text-center minipicul">
-                        @foreach($photos_of_album as $photo)
+                    <span id="backward"><i class="fa fa-angle-left  fa-2x" aria-hidden="true"></i></span>
+                    <ul class="list-inline text-center m-0 minipicul">
+                        {{--@foreach($photos_of_album as $photo)
                             <li class="list-inline-item" style="padding-top: 5px;" data-target="#photo_car" data-slide-to="{{$loop->index}}">
                                 <img src="{{url('img/'.$al_info->name.'/'.$photo->photo->name)}}" >
                             </li>
-                        @endforeach
+                        @endforeach--}}
                     </ul>
-                    <span id="forward">Вперёд</span>
+                    <span id="forward"><i class="fa fa-angle-right  fa-2x" aria-hidden="true"></i></span>
                 </div>
             </div>
 
@@ -88,30 +88,36 @@
     </div>
 
     <script type="text/javascript" lang="javascript">
-        /*$(function(){
+        $(window).on('load', function(){
             var ind = 0;
+            var count = "{{count($photos_of_album)}}";
             $("#photo_car").find("img").each(function(){
+                var li = $("<li></li>").addClass("list-inline-item").attr("data-target", "#photo_car").attr("data-slide-to", ind).appendTo(".minipicul");
                 var _img = new moxie.image.Image();
                 _img.onload = function(){
                     this.embed(
-                        $(".list-inline-item[data-slide-to=\""+ind+"\"]")[0],
+                        li[0],
                         {
                             width:50,
-                            height:50,
+                            height:30,
                             type:"image/jpeg",
                             quality:50,
                             crop:true
                         }
                     );
+
                 };
-                console.log($(this).attr("src"));
                 _img.load($(this).attr("src"));
                 ind += 1;
-            });
-        });*/
+                if(ind == parseInt(count)){
+                    setTimeout(function(){
+                        $('#before-load').find('i').fadeOut().end().delay(400).fadeOut('slow');
+                    }, 800);
 
-        $(window).on('load', function(){
-            $('#before-load').find('i').fadeOut().end().delay(400).fadeOut('slow');
+                }
+            });
+
+
         });
 
         $(".carousel-image").on("click", function(){
@@ -121,6 +127,11 @@
         $("#forward").on("click", function(){
             var leftPos = $('.minipicul').scrollLeft();
             $(".minipicul").animate({scrollLeft: leftPos + 260});
+        });
+
+        $("#backward").on("click", function(){
+            var leftPos = $('.minipicul').scrollLeft();
+            $(".minipicul").animate({scrollLeft: leftPos - 260});
         });
     </script>
 </body>

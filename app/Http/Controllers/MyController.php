@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 class MyController extends Controller
 {
     public function home(){
+
         $name_with_title = PhotoAlbum::with('get_title')->get()->shuffle();
         $new_order = new Collection();
         $buffer = new Collection();
@@ -66,23 +67,26 @@ class MyController extends Controller
 
     public function index_album_desk($al_id){
         $allAbout = $this->getAllAboutAlbum($al_id);
-        $view = view('al_index_desk')->with([
-            'al_info' => $allAbout["info"][0],
-            'photos_of_album' => $allAbout["photos"],
-            'tags' => $allAbout["tags"]
-        ]);
+
+        if(config("mobile")){
+            $view = view('al_index_mob')->with([
+                'al_info' => $allAbout["info"][0],
+                'photos_of_album' => $allAbout["photos"],
+                'tags' => $allAbout["tags"]
+            ]);
+        }
+        else{
+            $view = view('al_index_desk')->with([
+                'al_info' => $allAbout["info"][0],
+                'photos_of_album' => $allAbout["photos"],
+                'tags' => $allAbout["tags"]
+            ]);
+        }
+
+
         return $view;
     }
 
-    public function index_album_mob($al_id){
-        $allAbout = $this->getAllAboutAlbum($al_id);
-        $view = view('al_index_mob')->with([
-            'al_info' => $allAbout["info"][0],
-            'photos_of_album' => $allAbout["photos"],
-            'tags' => $allAbout["tags"]
-        ]);
-        return $view;
-    }
 
     private function getAllAboutAlbum($al_id){
         $al_info = PhotoAlbum::where("id", $al_id)

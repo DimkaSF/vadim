@@ -5,7 +5,6 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12 text-center">
-
                     <span class="al_name">
                       {{$al_info->name}}
                     </span>
