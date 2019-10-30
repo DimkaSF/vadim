@@ -6,10 +6,11 @@
     "type": "project",
     "require": {
         "php": "^7.3.4",
+        "cviebrock/eloquent-sluggable": "4.6",
         "fideloper/proxy": "^4.0",
+        "intervention/image": "dev-master",
         "laravel/framework": "5.7.*",
-        "laravel/tinker": "^1.0",
-        "intervention/image": "dev-master"
+        "laravel/tinker": "^1.0"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

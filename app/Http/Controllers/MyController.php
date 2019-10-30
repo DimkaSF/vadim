@@ -25,7 +25,7 @@ class MyController extends Controller
         $new_order = new Collection();
         $buffer = new Collection();
 
-        for ($i = 0; $i < count($name_with_title); $i++){
+        /*for ($i = 0; $i < count($name_with_title); $i++){
             if(count($buffer) == 2){
                 $pos = rand(0, 2);
                 $buffer->push($name_with_title[$i]);
@@ -54,7 +54,7 @@ class MyController extends Controller
             else
                 $buffer[$j]->setIsBigAttribute(false);
         }
-        $new_order = $new_order->merge($buffer);
+        $new_order = $new_order->merge($buffer);*/
 
 
         $view = view('home.index')->with([
@@ -65,8 +65,8 @@ class MyController extends Controller
 
 
 
-    public function index_album_desk($al_id){
-        $allAbout = $this->getAllAboutAlbum($al_id);
+    public function index_album_desk($slug){
+        $allAbout = $this->getAllAboutAlbum($slug);
 
         if(config("mobile")){
             $view = view('al_index_mob')->with([
@@ -88,17 +88,16 @@ class MyController extends Controller
     }
 
 
-    private function getAllAboutAlbum($al_id){
-        $al_info = PhotoAlbum::where("id", $al_id)
+    private function getAllAboutAlbum($slug){
+        $al_info = PhotoAlbum::where("slug", $slug)
             ->get();
-
         $photos_of_album = Albums_photos::join("photos", "albums_photos.id_photo", "=", "photos.id")
-            ->where('id_album', $al_id)
+            ->where('id_album', $al_info[0]->id)
             ->where("name", "NOT LIKE", "%cover%")
-            ->orderBy('name', 'ASC')
+            ->orderBy('pos')
             ->get();
 
-        $tags = DB::table("tags")->where("album_id", $al_id)->select("tag")->get();
+        $tags = DB::table("tags")->where("album_id", $al_info[0]->id)->select("tag")->get();
         return array("info" => $al_info, "photos" => $photos_of_album, "tags" => $tags);
     }
 

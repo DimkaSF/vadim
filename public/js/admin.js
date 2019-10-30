@@ -21,9 +21,10 @@ $(function(){
         url:"/admin/savephoto",
         init:{
             FilesAdded:function(up, files){
-                console.log(up);
+
                 $("#before-load").fadeIn(1500);
                 files = sortByKeyAsc(files, "name");
+                console.log(files);
                 var _list = $("#preview").find("tbody:first");
                 $("#uploadProgress").text("Создаём очередь. Ожидайте.");
                 $.each(files, function(index, file){
@@ -302,8 +303,9 @@ $("#formSendPic").on("submit", function(e){
         name:"_token",
         value:$('meta[name="csrf-token"]').attr('content')
     });
-
-
+    $("#containerUploader>table:first>tbody:first").find("tr").each(function(){
+        order.push($(this).data("name"));
+    });
     $.post(
         "/admin/createalbum",
         postData,
@@ -325,7 +327,6 @@ $("#formSendPic").on("submit", function(e){
             }
         }
     );
-
 
 
 

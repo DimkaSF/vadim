@@ -23,5 +23,4 @@ class PhotoAlbum extends Model
     public function setIsBigAttribute($bool){
         $this->attributes['is_big'] = $bool;
     }
-
 }

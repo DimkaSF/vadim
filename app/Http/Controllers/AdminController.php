@@ -27,74 +27,13 @@ class AdminController extends Controller
 {
     public function index(){
         $albums_names = PhotoAlbum::select("name", "id")->get();
+
         $view = view('new_admin')->with([
             "albums_names" => $albums_names
         ]);
         return $view;
     }
 
-    public function save_photo(Request $request){
-        $all_images = $request->allFiles();
-        usort($all_images, function($a, $b){
-            return ($a->getClientOriginalName() < $b->getClientOriginalName()) ? -1 : 1;
-        });
-        dd($all_images);
-        $album = new PhotoAlbum();
-        $album->name = $request->name_of_album;
-        $album->description = $request->album_desc;
-        $album->save();
-
-        File::makeDirectory(public_path('img/').$request->name_of_album);
-        $image = Image::make(base64_decode($request["cover"]));
-        $image->save(public_path('img/'.$request->name_of_album.'/'.$request->name_of_album."_cover.jpg"));
-
-        $photo_cover = new Photo();
-        $photo_cover->name = $request->name_of_album."_cover.jpg";
-        $photo_cover->save();
-
-        $connection_cover = new Albums_photos();
-        $connection_cover->id_album = $album->id;
-        $connection_cover->id_photo = $photo_cover->id;
-        $connection_cover->save();
-
-        PhotoAlbum::where('id', $album->id)
-            ->update(['title_photo_id' => $photo_cover->id]);
-
-        $count = 0;
-        foreach($all_images as $image){
-            if($image->getClientOriginalExtension() == "jpeg" ||
-                    $image->getClientOriginalExtension() == "jpg" ||
-                    $image->getClientOriginalExtension() == "png"){
-                    $filename = $request->name_of_album . '_photo_'. $count . '.' . $image->getClientOriginalExtension();
-
-                try{
-                    $image = Image::make($image);
-                    $image->save(public_path('img/'.$request->name_of_album.'/'.$filename));
-                    $photo = new Photo();
-                    $photo->name = $filename;
-                    $photo->save();
-
-                    $connection = new Albums_photos();
-                    $connection->id_album = $album->id;
-                    $connection->id_photo = $photo->id;
-                    $connection->save();
-                }
-                catch(exc $e){
-
-                }
-                $count = $count+1;
-            }
-        }
-
-        $tags = explode("/", $request->tags);
-        $tagsdb = array();
-        foreach ($tags as $key => $tag) {
-           $tagsdb[$key] = ["album_id" => 2, "tag" => $tag];
-        }
-        DB::table('tags')->insert($tagsdb);
-
-        return array(0 , "Загузка прошла успешно!");
-    }
 
     public function show_preview($id){
         $photos = DB::table("photo_albums")
@@ -203,16 +142,18 @@ class AdminController extends Controller
         $image = $request->file('file');
         $originalName = $image->getClientOriginalName();
         $pos = array_search($originalName, $request->order);
+
         if($pos == 0 || $pos != false){
             $allowExt = ["jpeg", "jpg", "png"];
             if(in_array(strtolower($image->getClientOriginalExtension()), $allowExt)){
-                $prefix = (($pos < 10)?"00".strval($pos+1):"0".strval($pos+1));
-                $filename = $prefix . md5($originalName). "." . strtolower($image->getClientOriginalExtension());
+
+                $filename = md5($originalName). "." . strtolower($image->getClientOriginalExtension());
                 try{
                     $image = Image::make($image);
                     $image->save(public_path('img/'.$request->albumName.'/'.$filename), 50);
                     $photo = new Photo();
                     $photo->name = $filename;
+                    $photo->pos = $pos+1;
                     $photo->save();
 
                     $connection = new Albums_photos();
@@ -238,17 +179,20 @@ class AdminController extends Controller
     }
 
     public function createAlbum(Request $request){
+        $slug = str_slug($request->nameOfAlbum);
         $album = new PhotoAlbum();
         $album->name = $request->nameOfAlbum;
         $album->description = $request->albumDesc;
+        $album->slug = $slug;
         $album->save();
 
-        File::makeDirectory(public_path('img/').$request->nameOfAlbum);
+        File::makeDirectory(public_path('img/'.$slug));
         $image = Image::make(base64_decode($request["cover"]));
-        $image->save(public_path('img/'.$request->nameOfAlbum.'/'.$request->nameOfAlbum."_cover.jpg"));
+        $image->save(public_path('img/'.$slug.'/'.$slug."_cover.jpg"));
 
         $photo_cover = new Photo();
-        $photo_cover->name = $request->nameOfAlbum."_cover.jpg";
+        $photo_cover->name = $slug."_cover.jpg";
+        $photo_cover->pos = 0;
         $photo_cover->save();
 
         $connection_cover = new Albums_photos();
@@ -267,6 +211,6 @@ class AdminController extends Controller
         }
         DB::table('tags')->insert($tagsdb);
 
-        return array("result"=>true, "content" => array("id" => $album->id, "albumName" => $request->nameOfAlbum));
+        return array("result"=>true, "content" => array("id" => $album->id, "albumName" => $slug));
     }
 }

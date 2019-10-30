@@ -508,6 +508,7 @@ form{
     padding-left: 100px !important;
     padding-right: 100px !important;
     text-align: center;
+    height: 40px !important;
 }
 
 .minipicul{
@@ -515,6 +516,10 @@ form{
     overflow: hidden;
     display:inline-block;
     width: 90%;
+}
+
+#backward{
+    vertical-align: middle;
 }
 
 @media (max-width: 425px){

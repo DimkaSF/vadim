@@ -48,7 +48,7 @@
                     <div class="carousel-inner">
                         @foreach($photos_of_album as $photo)
                             <div class="carousel-item carousel-div @if($loop->index == 0) active @endif">
-                                <img class="carousel-image d-block" src="{{url('img/'.$al_info->name.'/'.$photo->photo->name)}}" width="100%" height="100%"/>
+                                <img class="carousel-image d-block" src="{{url('img/'.$al_info->slug.'/'.$photo->photo->name)}}" width="100%" height="100%"/>
                             </div>
                         @endforeach
                     </div>
@@ -59,20 +59,15 @@
                 </div>
             </div>
             <div class="space30"></div>
+            <div class="space10"></div>
             <div class="row ">
                 <div class="col-12 colMiniPicUlParent">
-                    <span id="backward"><i class="fa fa-angle-left  fa-2x" aria-hidden="true"></i></span>
-                    <ul class="list-inline text-center m-0 minipicul">
-                        {{--@foreach($photos_of_album as $photo)
-                            <li class="list-inline-item" style="padding-top: 5px;" data-target="#photo_car" data-slide-to="{{$loop->index}}">
-                                <img src="{{url('img/'.$al_info->name.'/'.$photo->photo->name)}}" >
-                            </li>
-                        @endforeach--}}
-                    </ul>
-                    <span id="forward"><i class="fa fa-angle-right  fa-2x" aria-hidden="true"></i></span>
+
+                    <ul id="xMiniPic" class="list-inline text-center m-0 minipicul"></ul>
+                    <span id="forward"><i class="fa fa-angle-right fa-2x"></i></span>
                 </div>
             </div>
-
+            <div class="space10"></div>
             <div class="row">
                 <div class="col-12 text-center">
                     <p class="album_description">
@@ -92,32 +87,30 @@
             var ind = 0;
             var count = "{{count($photos_of_album)}}";
             $("#photo_car").find("img").each(function(){
-                var li = $("<li></li>").addClass("list-inline-item").attr("data-target", "#photo_car").attr("data-slide-to", ind).appendTo(".minipicul");
+                var li = $("<li></li>").addClass("list-inline-item").attr("data-target", "#photo_car").attr("data-slide-to", ind).appendTo("#xMiniPic");
                 var _img = new moxie.image.Image();
                 _img.onload = function(){
                     this.embed(
                         li[0],
                         {
-                            width:50,
-                            height:30,
+                            width:60,
+                            height:40,
                             type:"image/jpeg",
                             quality:50,
                             crop:true
                         }
                     );
-
                 };
                 _img.load($(this).attr("src"));
                 ind += 1;
                 if(ind == parseInt(count)){
+                    $(".colMiniPicUlParent:first").prepend("<span id=\"backward\"><i class=\"fa fa-angle-left fa-2x\"></i></span>");
                     setTimeout(function(){
                         $('#before-load').find('i').fadeOut().end().delay(400).fadeOut('slow');
                     }, 800);
 
                 }
             });
-
-
         });
 
         $(".carousel-image").on("click", function(){
@@ -126,12 +119,12 @@
 
         $("#forward").on("click", function(){
             var leftPos = $('.minipicul').scrollLeft();
-            $(".minipicul").animate({scrollLeft: leftPos + 260});
+            $(".minipicul").animate({scrollLeft: leftPos + 270});
         });
 
         $("#backward").on("click", function(){
             var leftPos = $('.minipicul').scrollLeft();
-            $(".minipicul").animate({scrollLeft: leftPos - 260});
+            $(".minipicul").animate({scrollLeft: leftPos - 270});
         });
     </script>
 </body>

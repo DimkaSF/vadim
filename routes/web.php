@@ -13,10 +13,7 @@
 
 Route::get('/', 'MyController@home');
 
-Route::get('/album_{id}', 'MyController@index_album_desk');
-Route::get('/login', 'LoginController@showLogin')->name('showLogin');
-Route::post('/login', 'LoginController@doLogin')->name('doLogin');
-Route::get('/logout', 'LoginController@LogOut');
+
 
 Route::group(['prefix'=>"admin", 'middleware'=>"auth"], function(){
     Route::get('/', 'AdminController@index')->middleware('auth')->name('admin');
@@ -33,6 +30,11 @@ Route::group(['prefix'=>"admin", 'middleware'=>"auth"], function(){
     Route::post("/savephoto", 'AdminController@savePhoto');
     Route::post("/createalbum", "AdminController@createAlbum");
 });
+
+Route::get('/{slug}', 'MyController@index_album_desk');
+Route::get('/login', 'LoginController@showLogin')->name('showLogin');
+Route::post('/login', 'LoginController@doLogin')->name('doLogin');
+Route::get('/logout', 'LoginController@LogOut');
 
 Route::get('/home', 'MyController@home')->name('home');
 Route::get('/me', 'MyController@WhoAmI');
