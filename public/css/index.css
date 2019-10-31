@@ -92,6 +92,15 @@ body{
     color:gray;
 }
 
+.list-inline-item{
+    border: 2px solid transparent;
+}
+
+.list-inline-item:hover{
+    border-color: #A9A9A9;
+    cursor: pointer;
+}
+
 .list-inline-item img{
     width: 40px;
     height: 40px;
@@ -427,12 +436,12 @@ form{
 .taglink{
     text-decoration: none;
     cursor:pointer;
-    color:gray;
+    color:#A9A9A9;
 
 }
 .taglink:hover{
     text-decoration: none;
-
+    color: #000;
 }
 
 
@@ -515,11 +524,21 @@ form{
     white-space: nowrap;
     overflow: hidden;
     display:inline-block;
-    width: 90%;
+    width: 95%;
 }
 
-#backward{
-    vertical-align: middle;
+.containerBlock{
+    width: 90%;
+    margin: 0 auto;
+}
+
+#gallery span{
+    color: #A9A9A9;
+}
+
+#gallery span:hover{
+    cursor: pointer;
+    color: #000;
 }
 
 @media (max-width: 425px){
@@ -576,5 +595,13 @@ form{
 
     .footer .links a{
         color: black;
+    }
+
+    .minipicul{
+        width: 86%;
+    }
+
+    .containerBlock{
+        width:100%;
     }
 }

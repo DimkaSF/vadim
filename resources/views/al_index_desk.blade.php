@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div class="row justify-content-center">
-                <div id="photo_car" class="carousel slide" data-ride="carousel" style="width:90%;">
+                <div id="photo_car" class="carousel slide" data-ride="carousel" style="width:90%;" data-piccount="{{count($photos_of_album)}}">
                     <div class="carousel-inner">
                         @foreach($photos_of_album as $photo)
                             <div class="carousel-item carousel-div @if($loop->index == 0) active @endif">
@@ -60,11 +60,11 @@
             </div>
             <div class="space30"></div>
             <div class="space10"></div>
-            <div class="row ">
-                <div class="col-12 colMiniPicUlParent">
-
+            <div class="containerBlock" id="gallery">
+                <div class="row align-items-center justify-content-around">
+                    <span id="backward"><i class="fa fa-angle-left fa-3x"></i></span>
                     <ul id="xMiniPic" class="list-inline text-center m-0 minipicul"></ul>
-                    <span id="forward"><i class="fa fa-angle-right fa-2x"></i></span>
+                    <span id="forward"><i class="fa fa-angle-right fa-3x"></i></span>
                 </div>
             </div>
             <div class="space10"></div>
@@ -77,55 +77,9 @@
                     </p>
                 </div>
             </div>
-
         </div>
-
     </div>
 
-    <script type="text/javascript" lang="javascript">
-        $(window).on('load', function(){
-            var ind = 0;
-            var count = "{{count($photos_of_album)}}";
-            $("#photo_car").find("img").each(function(){
-                var li = $("<li></li>").addClass("list-inline-item").attr("data-target", "#photo_car").attr("data-slide-to", ind).appendTo("#xMiniPic");
-                var _img = new moxie.image.Image();
-                _img.onload = function(){
-                    this.embed(
-                        li[0],
-                        {
-                            width:60,
-                            height:40,
-                            type:"image/jpeg",
-                            quality:50,
-                            crop:true
-                        }
-                    );
-                };
-                _img.load($(this).attr("src"));
-                ind += 1;
-                if(ind == parseInt(count)){
-                    $(".colMiniPicUlParent:first").prepend("<span id=\"backward\"><i class=\"fa fa-angle-left fa-2x\"></i></span>");
-                    setTimeout(function(){
-                        $('#before-load').find('i').fadeOut().end().delay(400).fadeOut('slow');
-                    }, 800);
-
-                }
-            });
-        });
-
-        $(".carousel-image").on("click", function(){
-            $(".carousel-control-next").click();
-        });
-
-        $("#forward").on("click", function(){
-            var leftPos = $('.minipicul').scrollLeft();
-            $(".minipicul").animate({scrollLeft: leftPos + 270});
-        });
-
-        $("#backward").on("click", function(){
-            var leftPos = $('.minipicul').scrollLeft();
-            $(".minipicul").animate({scrollLeft: leftPos - 270});
-        });
-    </script>
+    <script type="text/javascript" lang="javascript" src="/js/albumIndexDesk.js"></script>
 </body>
 </html>

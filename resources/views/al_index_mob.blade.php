@@ -14,7 +14,6 @@
                       @endforeach
                     </small>
                 </div>
-
             </div>
             <div class="row">
                 <div class="col-12 text-center">
@@ -36,21 +35,6 @@
 
     </div>
 
-    <script type="text/javascript" lang="javascript">
-        var next;
-        $(function(){
-            $(".footer").find("div[class$=links]").addClass("justify-content-between");
-        })
-        $(window).on('load', function(){
-            $('#before-load').find('i').fadeOut().end().delay(400).fadeOut('slow');
-            $('#slide_down').slideDown(1000);
-            next = $(".carousel-control-next");
-
-        });
-
-        $(".carousel-image").on("click", function(){
-            next.click();
-        });
-    </script>
+    <script type="text/javascript" lang="javascript" src="/js/albumIndexMob.js"></script>
 
 @endsection
