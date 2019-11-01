@@ -2,8 +2,8 @@
     <img src="{{asset("/img/logo_w.png")}}" alt="Лого" height="100px" />
 </div>
 <div class="col-12 col-md-6 flex-row-reverse links">
-    <a target="_blank" href="https://t.me/79159983117"><i class="fa fa-telegram align-self-center"></i></a>
-    <a target="_blank" href="https://wa.me/79159983117"><i class="fa fa-whatsapp align-self-center" data-toggle="modal" data-target="#Modal" aria-hidden="true"></i></a>
+    <a target="_blank" href="https://t.me/79065262125"><i class="fa fa-telegram align-self-center"></i></a>
+    <a target="_blank" href="https://wa.me/79065262125"><i class="fa fa-whatsapp align-self-center" data-toggle="modal" data-target="#Modal" aria-hidden="true"></i></a>
     <a href="https://www.facebook.com/zaichikovvadim" target="_blank">
         <i class="fa fa-facebook align-self-center" aria-hidden="true"></i>
     </a>
@@ -28,14 +28,12 @@
 </div>
 
 <script type="text/javascript">
-
-
     $(".showtel").on("click", function(){
-        var $temp = $("<input>");
-        $("body").append($temp);
-        $temp.val("+79065262125").select();
+        var temp = $("<input>");
+        $("body").append(temp);
+        temp.val("+79065262125").select();
         document.execCommand("copy");
-        $temp.remove();
+        temp.remove();
     });
 </script>
 </body>

@@ -20,54 +20,15 @@ use Illuminate\Http\Request;
 class MyController extends Controller
 {
     public function home(){
-
-        $name_with_title = PhotoAlbum::with('get_title')->get()->shuffle();
-        $new_order = new Collection();
-        $buffer = new Collection();
-
-        /*for ($i = 0; $i < count($name_with_title); $i++){
-            if(count($buffer) == 2){
-                $pos = rand(0, 2);
-                $buffer->push($name_with_title[$i]);
-                //dd(count($buffer));
-                for ($j = 0; $j < count($buffer); $j++){
-                    //print_r($buffer[$j]->name);
-                    if($j == $pos)
-                        $buffer[$j]->setIsBigAttribute(true);
-                    else
-                        $buffer[$j]->setIsBigAttribute(false);
-                }
-                $new_order = $new_order->merge($buffer);
-                $buffer = new Collection();
-            }
-            else{
-                $buffer->push($name_with_title[$i]);
-                //print_r($buffer);
-            }
-        }
-
-        $pos = rand(0, count($buffer));
-        for ($j = 0; $j < count($buffer); $j++){
-            //print_r($buffer[$j]->name);
-            if($j == $pos)
-                $buffer[$j]->setIsBigAttribute(true);
-            else
-                $buffer[$j]->setIsBigAttribute(false);
-        }
-        $new_order = $new_order->merge($buffer);*/
-
-
+        $name_with_title = PhotoAlbum::with('get_title')->orderBy("created_at", "DESC")->get();
         $view = view('home.index')->with([
             'name_with_title' => $name_with_title,
         ]);
         return $view;
     }
 
-
-
     public function index_album_desk($slug){
         $allAbout = $this->getAllAboutAlbum($slug);
-
         if(config("mobile")){
             $view = view('al_index_mob')->with([
                 'al_info' => $allAbout["info"][0],
@@ -114,7 +75,7 @@ class MyController extends Controller
         $tags = $this->getTags();
         $albums = DB::select("
             SELECT
-                al.id,
+                al.slug,
                 al.name as al_name,
                 al.title_photo_id,
                 ph.name as ph_name
@@ -124,7 +85,6 @@ class MyController extends Controller
             WHERE al.id IN (SELECT album_id FROM tags WHERE tag = '".$tag."')
             ");
         return view("/home/genres", ["tags" => $tags, "albums" => $albums]);
-
     }
 
     public function getAlbums(Request $request){

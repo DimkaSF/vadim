@@ -1,4 +1,4 @@
-@extends('header')
+@extends('index')
 
 @section('content')
 <div class="my_container genres_container">
@@ -9,14 +9,15 @@
             @foreach($tags as $tag)
                 <a href="/genres/{{$tag->text}}" class="tag" data-tag="{{$tag->text}}">#{{$tag->text}}</a>
             @endforeach
+            <div class="space20"></div>
         </div>
         <div class="g_content col-12 col-md-8">
             <div class="row ">
                 @if(isset($albums))
                     @foreach($albums as $al)
                         <div class="col-4 parent small" style="padding: 0">
-                            <a style="color: inherit; text-decoration: none;" href="/album_{{$al->id}}">
-                                <img class="img-home" src="{{url('img/'.$al->al_name.'/'.$al->ph_name)}}" width="100%"/>
+                            <a style="color: inherit; text-decoration: none;" href="/album/{{$al->slug}}">
+                                <img class="img-home" src="{{url('img/'.$al->slug.'/'.$al->ph_name)}}" width="100%"/>
                                 <div class="overlay">
                                    <div class="name_of_album">{{$al->al_name}}</div>
                                 </div>

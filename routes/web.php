@@ -20,7 +20,7 @@ Route::group(['prefix'=>"admin", 'middleware'=>"auth"], function(){
     Route::post('/send_photo', 'AdminController@save_photo');
     Route::get('/delete_al/show_photo_{id}', 'AdminController@show_preview');
     Route::get("/delete_al_{id}", 'AdminController@delete_album');
-    Route::get("/edit_al_{id}", 'AdminController@show_preview');
+    Route::get("/edit_al_{id}", 'AdminController@showPreview');
     Route::get("/delete/album_{al_id}/photo_{ph_id}", 'AdminController@delete_one_photo');
     Route::post("/edit_al/new_cover", 'AdminController@save_new_cover');
     Route::get("/getalbmsnames", 'AdminController@getAlbumsNames');
@@ -31,15 +31,14 @@ Route::group(['prefix'=>"admin", 'middleware'=>"auth"], function(){
     Route::post("/createalbum", "AdminController@createAlbum");
 });
 
-Route::get('/{slug}', 'MyController@index_album_desk');
+Route::get('/genres', 'MyController@getGenresIndex');
+Route::get('/genres/gettags', 'MyController@getTags');
+Route::get('/genres/{tag}', 'MyController@getAlbumsWithTag');
+Route::get('/home', 'MyController@home')->name('home');
+Route::get('/me', 'MyController@WhoAmI');
 Route::get('/login', 'LoginController@showLogin')->name('showLogin');
 Route::post('/login', 'LoginController@doLogin')->name('doLogin');
 Route::get('/logout', 'LoginController@LogOut');
 
-Route::get('/home', 'MyController@home')->name('home');
-Route::get('/me', 'MyController@WhoAmI');
-Route::get('/genres', 'MyController@getGenresIndex');
-Route::get('/genres/gettags', 'MyController@getTags');
-Route::get('/genres/{tag}', 'MyController@getAlbumsWithTag');
-
-Route::get('/inst', 'MyController@getInst');
+/*Этот путь последний, который отрисовывает альбомы*/
+Route::get('/album/{slug}', 'MyController@index_album_desk');

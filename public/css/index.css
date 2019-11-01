@@ -400,6 +400,9 @@ form{
     height:inherit;
 }
 
+.g_leftside{
+    padding-left: 5%;
+}
 
 .g_leftside .tag{
     font-family: "opensans";
@@ -407,11 +410,11 @@ form{
     margin-bottom: -6px;
     display: block;
     text-decoration: none;
-    color:black;
+    color:#A9A9A9;
 }
 
 .g_leftside .tag:hover{
-    color: gray;
+    color: #000;
     cursor: pointer;
 }
 

@@ -41,14 +41,14 @@
             </ul>
 
             <div id="tabs-1">
-                <div class="row add_al">
+                <div class="row add_al" id="addContainer">
                     <div class="col-md-6">
                         <form action="/admin/send_photo" id="formSendPic" type="POST" class="form_style dropzone">
                             <input type="text" name="nameOfAlbum" placeholder="Название альбома" style="width:100%" required />
                             <div class="space5"></div>
                             <textarea name="albumDesc" rows="3" cols="50" style="width: 100%" placeholder="Описание альбома"></textarea>
                             <div class="helper">Максимум 255 символов</div>
-                            <div class="space5"></div>
+                            <div class="space5" id="editMagicSuggestDropAfter"></div>
                             <input name="tags" type="text" />
                             <div class="space5"></div>
                             <div id="containerUploader" >
@@ -79,12 +79,15 @@
                 </div>
             </div>
             <div id="tabs-2">
-                С апдейтами подкатит наверно
+
+                {{--Редактирование--}}
+                <div id="editContainer">
+                    <input name="editAl" type="text" />
+                </div>
+                {{--Редактирование--}}
             </div>
             <div id="tabs-3">
-                <div>
-                    <input name="delAl" placeholder="Выбери альбом" />
-                </div>
+                <input name="delAl" placeholder="Выбери альбом" />
             </div>
         </div>
         <div class="space5"></div>
@@ -98,6 +101,10 @@
     </div>
     <div id="finalDialog" title="Создать ещё альбом?" style="display:none;">
         Загрузка прошла успешно! Выберите дальнейшее действие.
+    </div>
+
+    <div id="before-load" style="display:none">
+        <img src="{{asset("/img/logo.png")}}" alt="logo" />
     </div>
 
     <script src="/js/admin.js"></script>

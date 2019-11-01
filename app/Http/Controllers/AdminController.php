@@ -35,29 +35,43 @@ class AdminController extends Controller
     }
 
 
-    public function show_preview($id){
-        $photos = DB::table("photo_albums")
-                    ->leftjoin("albums_photos", "photo_albums.id", "=", "albums_photos.id_album")
-                    ->leftjoin("photos", "albums_photos.id_photo", "=", "photos.id")
-                    ->where("photo_albums.id", $id)
-                    ->select(
-                            "photo_albums.name as al_name",
-                            "photos.name as  ph_name",
-                            "photo_albums.id as al_id",
-                            "photos.id as  ph_id"
-                            )
-                    ->get();
-        $tags = DB::table("photo_albums")
-                    ->leftjoin("tags", "photo_albums.id", "=", "tags.album_id")
-                    ->select("tags.tag")
-                    ->where("tags.album_id", $id)
-                    ->get();
+    public function showPreview($id){
+        $al_info = DB::select("
+            SELECT
+                main.name as al_name,
+                main.description as al_desc,
+                main.id as al_id,
+                main.slug as slug,
+                GROUP_CONCAT(DISTINCT tg.tag) as tags
+            FROM
+                photo_albums main
+            LEFT JOIN tags tg ON (tg.album_id = main.id)
+            WHERE main.id = ".$id);
+
+        $photos = DB::select("
+            SELECT
+                ph.name as name,
+                ph.id as id,
+                ph.pos as slug
+            FROM
+                photos ph
+            LEFT JOIN albums_photos con1 ON (ph.id = con1.id_photo)
+            LEFT JOIN photo_albums con2 ON (con1.id_album = con2.id)
+            WHERE
+                con2.id = ".$id."
+            ORDER BY ph.pos
+        ");
+        $str = "";
+        foreach($photos as $ph){
+            $str = $str . implode(",", array($ph->name, $ph->id, $ph->slug)) . ";";
+        }
+        $al_info[0]->photos = $str;
 
         $all_tags = DB::table("tags")
                     ->select("tag")
                     ->distinct("tag")
                     ->get();
-        return array("photos" => $photos, "tags" => $tags, "all_tags" => $all_tags);
+        return array("all_tags" => $all_tags, "al_info" => $al_info[0]);
     }
 
     public function delete_album($id){

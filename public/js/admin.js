@@ -1,8 +1,9 @@
 var uploader;
 var pics = [];
-var ms, ms_del;
+var ms, ms_del, ms_edit;
 var cropper;
 var picCount=0;
+
 $(function(){
     uploader = new plupload.Uploader({
         browse_button:$("#pickFiles")[0],
@@ -21,7 +22,6 @@ $(function(){
         url:"/admin/savephoto",
         init:{
             FilesAdded:function(up, files){
-
                 $("#before-load").fadeIn(1500);
                 files = sortByKeyAsc(files, "name");
                 console.log(files);
@@ -33,15 +33,9 @@ $(function(){
                         .attr("id",file.id)
                         .data("id",file.id)
                         .attr("data-name", file.name)
-                        .append(
-                            $("<td></td>")
-                        )
-                        .append(
-                            $("<td style=\"word-break: break-all;\">"+file.name+"</td>")
-                        )
-                        .append(
-                            $("<td>"+plupload.formatSize(file.size)+"</td>")
-                        )
+                        .append("<td></td>")
+                        .append("<td style=\"word-break: break-all;\">"+file.name+"</td>")
+                        .append("<td>"+plupload.formatSize(file.size)+"</td>")
                         .append(
                             $("<td></td>")
                                 .append(
@@ -143,9 +137,136 @@ $(function(){
             });
         }
     });
+    //////////////////////////
+    ms_edit = $("input[name=editAl]").magicSuggest({
+        placeholder: 'Выберите альбом для редактирования',
+        maxDropHeight: 145,
+        maxSelection: 1
+    });
+    $(ms_edit).on("selectionchange", function(e,m){
+        var editCont = $("#editContainer");
+        if($.type(this.getValue()[0]) == "undefined"){
+            editCont.find("#addContainer").remove();
+            return false;
+        }
+
+        $('#before-load').fadeIn();
+        $.get(
+            "/admin/edit_al_"+this.getValue()[0],
+            function(data){
+                console.log(data);
+                editCont.append($("#addContainer").clone());
+                editCont.find(".add_al:first").attr("id", "editExist");
+                var parent = editCont.find("#editExist");
+
+                parent.find("input[name=nameOfAlbum]").val(data.al_info.al_name);
+                parent.find("textarea[name=albumDesc]").val(data.al_info.al_desc);
+
+                parent.find(".ms-ctn:first").remove();
+                $("<input name=\"edit_alInside\" type=\"text\">").insertAfter(parent.find("#editMagicSuggestDropAfter"));
+                var ms_editInside = parent.find("input[name=\"edit_alInside\"]").magicSuggest({
+                    placeholder: 'Выбери тег',
+                    maxDropHeight: 145
+                });
+                var msData = [];
+                $.each(data.all_tags, function(index, tag){
+                    msData.push(tag.tag);
+                });
+                ms_editInside.setData(msData);
+                ms_editInside.setValue(data.al_info.tags.split(","), true);
+
+                /*Работа с таблицей*/
+                parent.find()
+                parent.find("table:first>thead:first").find("tr").remove();
+                $("<tr></tr>")
+                    .append("<td>Картинка</td>")
+                    .append("<td>Номер</td>")
+                    .append("<td>Имя</td>")
+                    .append("<td>Удалить</td>")
+                    .append("<td></td>")
+                    .append("<td></td>")
+                    .append("<td></td>")
+                .appendTo(parent.find("table:first>thead:first"));
+
+                var allPhotosInfo = data.al_info.photos.split(";");
+                var lastPicName = allPhotosInfo[allPhotosInfo.length-2].split(",")[0];
+                var _list = parent.find("table:first>tbody:first");
+                $.each(allPhotosInfo.slice(1), function(index, photoinfo){
+                    var filename = photoinfo.split(",");
+                    var _row = $("<tr></tr>")
+                        .attr("data-pos", filename[2])
+                        .append("<td></td>")
+                        .append("<td>"+filename[2]+"</td>")
+                        .append("<td>"+filename[0]+"</td>")
+                        .append(
+                            $("<td></td>")
+                                .append(
+                                    $("<i class=\"fa fa-times delPhoto\"></i>")
+                                        .css("cursor", "pointer")
+                                )
+                        )
+                        .append(
+                            $("<td data-move=\"up\"><i class=\"fa fa-arrow-up\" aria-hidden=\"true\"></i></td>")
+                                .css("cursor", "pointer")
+                        )
+                        .append(
+                            $("<td data-move=\"down\"><i class=\"fa fa-arrow-down\" aria-hidden=\"true\"></i></td>")
+                                .css("cursor", "pointer")
+                        )
+                    var _img = new moxie.image.Image();
+                    _img.onload = function(){
+                        this.embed(
+                            _row.find(">td:first")[0],
+                            {
+                                width:50,
+                                height:50,
+                                type:"image/jpeg",
+                                quality:50,
+                                crop:true
+                            }
+                        );
+
+                        if(lastPicName == filename[0]){
+                            $('#before-load').fadeOut();
+                        }
+                    };
+                    _img.load("/img/"+data.al_info.slug+"/"+filename[0]);
+                    _row.appendTo(_list);
+                });
+
+                /*закончили работать с таблицей*/
+
+                /*Работа с обложкой
+                var reader = new FileReader();
+                console.log("/img/"+data.al_info.slug+"/"+allPhotosInfo[0].split(",")[0]);
+                reader.readAsDataURL("/img/"+data.al_info.slug+"/"+allPhotosInfo[0].split(",")[0]);
+                reader.onload = function (e) {
+                    parent.find(".workWithCover").append("<img id=\"myCoverEdit\" src=\""+e.srcElement.result+"\" />");
+                };
+                reader.onloadend = function(){
+                    var cover = parent.find(".workWithCover").find("#myCoverEdit")[0];
+                    cropper = new Cropper(cover,{
+                        viewMode: 3,
+                        aspectRatio: 1/1,
+                        dragMode: 'move',
+                        cropBoxResizable: true,
+                        ready(){
+                            cropper.crop();
+                            cropper.setCropBoxData({"width":920,"height":720});
+                        }
+                    });
+                };
+
+                /*закончили работать с обложкой*/
+
+            }
+        );
+    });
+    ////////////////////////
+
 
     ms_del = $("input[name=delAl]").magicSuggest({
-        placeholder: 'Выбери альбом',
+        placeholder: 'Выберите альбом',
         maxDropHeight: 145,
         maxSelection: 1
     });
@@ -168,6 +289,7 @@ $(function(){
             });
         }
     });
+    ms_edit.setData(albumsNames);
     ms_del.setData(albumsNames);
     $( "#tabs" ).tabs();
 
@@ -219,7 +341,7 @@ $("#containerUploader").on("click", "*[class$=delPhoto]", function(){
     $(this).closest("tr").remove();
 });
 
-$("#containerUploader").on("click", "*[data-move]", function(){
+$("body").on("click", "*[data-move]", function(){
     var _row = $(this).closest("tr");
     var direction = $(this).data("move");
     switch(direction){
