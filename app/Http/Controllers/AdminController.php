@@ -65,6 +65,7 @@ class AdminController extends Controller
         foreach($photos as $ph){
             $str = $str . implode(",", array($ph->name, $ph->id, $ph->slug)) . ";";
         }
+        $str = substr($str, 0, -1);
         $al_info[0]->photos = $str;
 
         $all_tags = DB::table("tags")
@@ -75,12 +76,12 @@ class AdminController extends Controller
     }
 
     public function delete_album($id){
-        $alName = PhotoAlbum::where("id", $id)->select("name")->first();
+        $alName = PhotoAlbum::where("id", $id)->select("slug")->first();
         PhotoAlbum::where("id", $id)->delete();
         DB::delete("delete from photos where id in (select id_photo from albums_photos where id_album = ".$id.")");
         Albums_photos::where("id_album", $id)->delete();
         DB::delete("delete from tags where album_id = ".$id);
-        File::deleteDirectory(public_path('/img/'.$alName->name));
+        File::deleteDirectory(public_path('/img/'.$alName->slug));
         return array("result" => true);
     }
 
@@ -156,15 +157,13 @@ class AdminController extends Controller
         $image = $request->file('file');
         $originalName = $image->getClientOriginalName();
         $pos = array_search($originalName, $request->order);
-
         if($pos == 0 || $pos != false){
             $allowExt = ["jpeg", "jpg", "png"];
             if(in_array(strtolower($image->getClientOriginalExtension()), $allowExt)){
-
                 $filename = md5($originalName). "." . strtolower($image->getClientOriginalExtension());
                 try{
                     $image = Image::make($image);
-                    $image->save(public_path('img/'.$request->albumName.'/'.$filename), 50);
+                    $image->save(public_path('img/'.$request->albumName.'/'.$filename), 60);
                     $photo = new Photo();
                     $photo->name = $filename;
                     $photo->pos = $pos+1;

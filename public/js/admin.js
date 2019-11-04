@@ -1,7 +1,7 @@
-var uploader;
+var uploader, uploaderEdit;
 var pics = [];
 var ms, ms_del, ms_edit;
-var cropper;
+var cropper, cropperEdit;
 var picCount=0;
 
 $(function(){
@@ -33,6 +33,7 @@ $(function(){
                         .attr("id",file.id)
                         .data("id",file.id)
                         .attr("data-name", file.name)
+                        .attr("data-type", "add")
                         .append("<td></td>")
                         .append("<td style=\"word-break: break-all;\">"+file.name+"</td>")
                         .append("<td>"+plupload.formatSize(file.size)+"</td>")
@@ -157,6 +158,11 @@ $(function(){
                 console.log(data);
                 editCont.append($("#addContainer").clone());
                 editCont.find(".add_al:first").attr("id", "editExist");
+                editCont.find("form:first").find("#pickFiles").attr("id", "pickFilesEdit");
+                editCont.find("form:first").find("#containerUploader").attr("id", "containerUploaderEdit");
+                editCont.find(".col-md-6:eq(1)").removeClass("pt-5");
+                editCont.find("form:first").attr("id", "formSendPicEdit");
+                editCont.find(".workWithCover:first").attr("class", "workWithCoverEdit");
                 var parent = editCont.find("#editExist");
 
                 parent.find("input[name=nameOfAlbum]").val(data.al_info.al_name);
@@ -180,7 +186,7 @@ $(function(){
                 parent.find("table:first>thead:first").find("tr").remove();
                 $("<tr></tr>")
                     .append("<td>Картинка</td>")
-                    .append("<td>Номер</td>")
+
                     .append("<td>Имя</td>")
                     .append("<td>Удалить</td>")
                     .append("<td></td>")
@@ -194,9 +200,11 @@ $(function(){
                 $.each(allPhotosInfo.slice(1), function(index, photoinfo){
                     var filename = photoinfo.split(",");
                     var _row = $("<tr></tr>")
+                        .attr("data-type", "edit")
                         .attr("data-pos", filename[2])
+                        .attr("data-path", "/img/"+data.al_info.slug+"/"+filename[0])
                         .append("<td></td>")
-                        .append("<td>"+filename[2]+"</td>")
+
                         .append("<td>"+filename[0]+"</td>")
                         .append(
                             $("<td></td>")
@@ -204,6 +212,10 @@ $(function(){
                                     $("<i class=\"fa fa-times delPhoto\"></i>")
                                         .css("cursor", "pointer")
                                 )
+                        )
+                        .append(
+                            $("<td class=\"onCoverEdit\">На обложку</td>")
+                                .css("cursor", "pointer")
                         )
                         .append(
                             $("<td data-move=\"up\"><i class=\"fa fa-arrow-up\" aria-hidden=\"true\"></i></td>")
@@ -236,28 +248,99 @@ $(function(){
 
                 /*закончили работать с таблицей*/
 
-                /*Работа с обложкой
-                var reader = new FileReader();
-                console.log("/img/"+data.al_info.slug+"/"+allPhotosInfo[0].split(",")[0]);
-                reader.readAsDataURL("/img/"+data.al_info.slug+"/"+allPhotosInfo[0].split(",")[0]);
-                reader.onload = function (e) {
-                    parent.find(".workWithCover").append("<img id=\"myCoverEdit\" src=\""+e.srcElement.result+"\" />");
-                };
-                reader.onloadend = function(){
-                    var cover = parent.find(".workWithCover").find("#myCoverEdit")[0];
-                    cropper = new Cropper(cover,{
-                        viewMode: 3,
-                        aspectRatio: 1/1,
-                        dragMode: 'move',
-                        cropBoxResizable: true,
-                        ready(){
-                            cropper.crop();
-                            cropper.setCropBoxData({"width":920,"height":720});
-                        }
-                    });
-                };
-
+                /*Работа с обложкой*/
+                $("<div class='edit_al_photo_preview'>Текущая обложка:<br/></div>")
+                    .append("<img src=\"/img/"+data.al_info.slug+"/"+allPhotosInfo[0].split(",")[0]+"\" width='50%'>")
+                .appendTo(parent.find(".workWithCoverEdit:first"));
                 /*закончили работать с обложкой*/
+
+                /*Создаём новый uploader*/
+                pics=[];
+                uploader = new plupload.Uploader({
+                    browse_button:parent.find("#pickFilesEdit")[0],
+                    container:parent.find("#containerUploaderEdit")[0],
+                    drop_element:parent.find("#containerUploaderEdit")[0],
+                    max_retries:0,
+                    sortable: true,
+                    filters:{
+                        max_file_size:"16mb",
+                        mime_types:"image/jpg,image/jpeg,image/png",
+                        prevent_duplicates:true
+                    },
+                    multipart_params:{
+                        "empty":"true"
+                    },
+                    url:"/admin/savephoto",
+                    init:{
+                        FilesAdded:function(up, files){
+                            $("#before-load").fadeIn(1500);
+                            files = sortByKeyAsc(files, "name");
+                            var _list = parent.find("#preview").find("tbody:first");
+                            $("#uploadProgress").text("Создаём очередь. Ожидайте.");
+                            $.each(files, function(index, file){
+                                pics.push(file);
+                                var _row = $("<tr></tr>")
+                                    .attr("data-type", "edit")
+                                    .append("<td></td>")
+                                    .append("<td style=\"word-break: break-all;\">"+file.name+"</td>")
+                                    .append(
+                                        $("<td></td>")
+                                            .append(
+                                                $("<i class=\"fa fa-times delPhoto\"></i>")
+                                                    .css("cursor", "pointer")
+                                            )
+                                    )
+                                    .append(
+                                        $("<td class=\"onCover\">На обложку</td>")
+                                            .css("cursor", "pointer")
+                                    )
+                                    .append(
+                                        $("<td data-move=\"up\"><i class=\"fa fa-arrow-up\" aria-hidden=\"true\"></i></td>")
+                                            .css("cursor", "pointer")
+                                    )
+                                    .append(
+                                        $("<td data-move=\"down\"><i class=\"fa fa-arrow-down\" aria-hidden=\"true\"></i></td>")
+                                            .css("cursor", "pointer")
+                                    )
+                                .appendTo(_list);
+                                var _img = new moxie.image.Image();
+                                _img.onload = function(){
+                                    this.embed(
+                                        _row.find(">td:first")[0],
+                                        {
+                                            width:50,
+                                            height:50,
+                                            type:"image/jpeg",
+                                            quality:50,
+                                            crop:true
+                                        }
+                                    );
+                                    if(this.name == pics[pics.length-1].name){
+                                        $("#before-load").fadeOut(1500);
+                                        $("#uploadProgress").text("");
+                                    }
+                                };
+                                _img.load(file.getSource());
+                            });
+                        },
+                        UploadComplete:function(up, files){
+                            $("#before-load").fadeOut(1500);
+                            $("#finalDialog").dialog( "open" );
+                        },
+                        FileUploaded:function(up, file, result){
+                            if(result.response){
+                                $("#uploadProgress").text("").text(file.name + " загружен. Осталось: " + picCount);
+                                picCount = picCount - 1;
+                            }
+                            else{
+                                $("#uploadProgress").text("").text(file.name + " - тут ошибка...что то пошло не так");
+                            }
+                        }
+                    },
+                    headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
+                });
+                uploader.init();
+                /*создали новый uploader*/
 
             }
         );
@@ -357,24 +440,36 @@ $("body").on("click", "*[data-move]", function(){
 
 });
 
-$("#containerUploader").on("click", "*[class=onCover]", function(){
-    $(".workWithCover").html("");
-    var id = $(this).closest("tr").data("id");
+$("body").on("click", "*[class=onCover]", function(){
+    var _row = $(this).closest("tr");
+    var id = _row.data("id");
     var ind = 0;
+    var selector="";
     for(var i=0, len=pics.length; i<len; i++){
         if(pics[i]["id"] == id){
             ind = i;
             break;
         }
     }
-    var _img = pics[ind].getNative();
+
+    if(_row.data("type")=="edit"){
+        selector="Edit";
+    }
+
+    console.log(selector);
+    $(".workWithCover"+selector).html("");
+    coverEdit(pics[ind].getNative(), selector);
+});
+
+function coverEdit(_img, selector){
     var reader = new FileReader();
     reader.readAsDataURL(_img);
+    var _parent = $(".workWithCover"+selector);
     reader.onload = function (e) {
-        $(".workWithCover").append("<img id=\"myCover\" src=\""+e.srcElement.result+"\" />");
+        _parent.append("<img id=\"myCover\" src=\""+e.srcElement.result+"\" width=\"100%\" />");
     };
     reader.onloadend = function(){
-        var cover = $(".workWithCover").find("#myCover")[0];
+        var cover = _parent.find("#myCover")[0];
         cropper = new Cropper(cover,{
             viewMode: 3,
             aspectRatio: 1/1,
@@ -386,7 +481,28 @@ $("#containerUploader").on("click", "*[class=onCover]", function(){
             }
         });
     };
-});
+}
+
+$("#editContainer").on("click", ".onCoverEdit", function(){
+    var _cont = $(".workWithCoverEdit>div:first");
+    var parent = $(this).closest("tr");
+    var id = parent.data("id");
+    _cont.html("");
+    var _img = $("<img src=\""+parent.data("path")+"\" width=\"100%\" />");
+
+    _img.appendTo(_cont);
+
+    cropperEdit = new Cropper(_img[0],{
+        viewMode: 3,
+        aspectRatio: 1/1,
+        dragMode: 'move',
+        cropBoxResizable: true,
+        ready(){
+            cropperEdit.crop();
+            cropperEdit.setCropBoxData({"width":480,"height":360});
+        }
+    })
+})
 
 $("textarea[name=albumDesc]").on("keyup", function(){
     if($(this).val().length <= 255){
@@ -425,9 +541,6 @@ $("#formSendPic").on("submit", function(e){
         name:"_token",
         value:$('meta[name="csrf-token"]').attr('content')
     });
-    $("#containerUploader>table:first>tbody:first").find("tr").each(function(){
-        order.push($(this).data("name"));
-    });
     $.post(
         "/admin/createalbum",
         postData,
@@ -449,7 +562,9 @@ $("#formSendPic").on("submit", function(e){
             }
         }
     );
+});
 
-
-
+$("#editContainer").on("click", "form:first input[type=submit]",function(e){
+    e.preventDefault();
+    alert("111");
 });
