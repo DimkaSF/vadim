@@ -5,12 +5,13 @@
         <group>
             <file>file:/C:/wamp64/www/Vadim_lara/routes/web.php</file>
             <file>file:/C:/wamp64/www/Vadim_lara/resources/views/new_admin.blade.php</file>
+            <file>file:/C:/wamp64/www/Vadim_lara/resources/views/index.blade.php</file>
             <file>file:/C:/wamp64/www/Vadim_lara/app/Http/Controllers/AdminController.php</file>
+            <file>file:/C:/wamp64/www/Vadim_lara/resources/views/footer.blade.php</file>
+            <file>file:/C:/wamp64/www/Vadim_lara/public/js/admin.js</file>
             <file>file:/C:/wamp64/www/Vadim_lara/app/Http/Controllers/MyController.php</file>
-            <file>file:/C:/wamp64/www/Vadim_lara/resources/views/al_index_desk.blade.php</file>
-            <file>file:/C:/wamp64/www/Vadim_lara/app/PhotoAlbum.php</file>
+            <file>file:/C:/wamp64/www/Vadim_lara/public/js/homepage.js</file>
             <file>file:/C:/wamp64/www/Vadim_lara/public/css/index.css</file>
-            <file>file:/C:/wamp64/www/Vadim_lara/public/js/albumIndexDesk.js</file>
             <file>file:/C:/wamp64/www/Vadim_lara/resources/views/home/index.blade.php</file>
         </group>
     </open-files>

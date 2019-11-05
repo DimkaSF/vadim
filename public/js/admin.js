@@ -1,7 +1,7 @@
 var uploader, uploaderEdit;
 var pics = [];
 var ms, ms_del, ms_edit;
-var cropper, cropperEdit;
+var cropper;
 var picCount=0;
 
 $(function(){
@@ -133,6 +133,7 @@ $(function(){
         processData: false,
         contentType: false,
         success: function (data) {
+
             $.each(data.content, function(index, al){
                 albumsNames.push(al);
             });
@@ -201,7 +202,7 @@ $(function(){
                     var filename = photoinfo.split(",");
                     var _row = $("<tr></tr>")
                         .attr("data-type", "edit")
-                        .attr("data-pos", filename[2])
+                        .attr("data-id", filename[1])
                         .attr("data-path", "/img/"+data.al_info.slug+"/"+filename[0])
                         .append("<td></td>")
 
@@ -325,7 +326,6 @@ $(function(){
                         },
                         UploadComplete:function(up, files){
                             $("#before-load").fadeOut(1500);
-                            $("#finalDialog").dialog( "open" );
                         },
                         FileUploaded:function(up, file, result){
                             if(result.response){
@@ -372,6 +372,8 @@ $(function(){
             });
         }
     });
+    console.log(albumsNames);
+
     ms_edit.setData(albumsNames);
     ms_del.setData(albumsNames);
     $( "#tabs" ).tabs();
@@ -393,7 +395,7 @@ $("#finalDialog").dialog({
             window.location.href = "/";
         },
         "Остаться в админке": function() {
-            window.location.reload();
+            window.location.reload(true);
         }
     }
 });
@@ -421,6 +423,11 @@ $("#containerUploader").on("click", "*[class$=delPhoto]", function(){
             break;
         }
     }
+    if(id == $(".workWithCover").find("img:first").data("id")){
+        cropper.destroy();
+        $(".workWithCover").find("img:first").remove();
+    }
+
     $(this).closest("tr").remove();
 });
 
@@ -437,7 +444,6 @@ $("body").on("click", "*[data-move]", function(){
             break
         }
     }
-
 });
 
 $("body").on("click", "*[class=onCover]", function(){
@@ -451,22 +457,14 @@ $("body").on("click", "*[class=onCover]", function(){
             break;
         }
     }
+    $(".workWithCover").html("");
 
-    if(_row.data("type")=="edit"){
-        selector="Edit";
-    }
-
-    console.log(selector);
-    $(".workWithCover"+selector).html("");
-    coverEdit(pics[ind].getNative(), selector);
-});
-
-function coverEdit(_img, selector){
     var reader = new FileReader();
-    reader.readAsDataURL(_img);
+    reader.readAsDataURL(pics[ind].getNative());
+
     var _parent = $(".workWithCover"+selector);
     reader.onload = function (e) {
-        _parent.append("<img id=\"myCover\" src=\""+e.srcElement.result+"\" width=\"100%\" />");
+        _parent.append("<img id=\"myCover\" src=\""+e.srcElement.result+"\" width=\"100%\" data-id=\""+pics[ind]["id"]+"\" />");
     };
     reader.onloadend = function(){
         var cover = _parent.find("#myCover")[0];
@@ -481,27 +479,28 @@ function coverEdit(_img, selector){
             }
         });
     };
-}
+});
+
 
 $("#editContainer").on("click", ".onCoverEdit", function(){
     var _cont = $(".workWithCoverEdit>div:first");
     var parent = $(this).closest("tr");
     var id = parent.data("id");
     _cont.html("");
-    var _img = $("<img src=\""+parent.data("path")+"\" width=\"100%\" />");
+    var _img = $("<img src=\""+parent.data("path")+"\" width=\"100%\" data-id=\""+id+"\" />");
 
     _img.appendTo(_cont);
 
-    cropperEdit = new Cropper(_img[0],{
+    cropper = new Cropper(_img[0],{
         viewMode: 3,
         aspectRatio: 1/1,
         dragMode: 'move',
         cropBoxResizable: true,
         ready(){
-            cropperEdit.crop();
-            cropperEdit.setCropBoxData({"width":480,"height":360});
+            cropper.crop();
+            cropper.setCropBoxData({"width":920,"height":720});
         }
-    })
+    });
 })
 
 $("textarea[name=albumDesc]").on("keyup", function(){
@@ -564,7 +563,94 @@ $("#formSendPic").on("submit", function(e){
     );
 });
 
-$("#editContainer").on("click", "form:first input[type=submit]",function(e){
+
+$("#editContainer").on("click", "form:first input[type=submit]", function(e){
     e.preventDefault();
-    alert("111");
+    e.stopPropagation();
+
+    var id = ms_edit.getSelection()[0].id;
+    var slug = ms_edit.getSelection()[0].slug;
+    var _tokenVal = $('meta[name=csrf-token]').attr("content");
+    var newOrder = [];
+    var postData = $(this).closest("form").serializeArray();
+    $("#containerUploaderEdit>table:first>tbody:first").find("tr").each(function(){
+        newOrder.push($(this).data("id"));
+    });
+
+    postData.push({
+        name:"id",
+        value:id
+    });
+    postData.push({
+        name:"pos",
+        value:newOrder
+    });
+    postData.push({
+        name:"_token",
+        value:_tokenVal
+    });
+
+    if($.type(cropper) != "undefined"){
+        cropper.getCroppedCanvas().toBlob(function (blob) {
+            var formData = new FormData();
+            formData.append("edit_cover", blob);
+            formData.append("slug", slug);
+            formData.append("al_id", id);
+            formData.append("_token", _tokenVal);
+            $.ajax('/admin/savenewcover', {
+              method: "POST",
+              data: formData,
+              processData: false,
+              contentType: false,
+            });
+        });
+    }
+
+    $.post(
+        "/admin/saveafteredit",
+        postData,
+        function(data){
+            if(data.result){
+                $("#finalDialog").dialog( "open" );
+            }
+            else{
+                console.log(data.errors);
+            }
+        }
+    )
+
+})
+
+$("#editContainer").on("click", ".delPhoto", function(){
+    if(confirm("Действительно удалить это фото?")){
+        var parent = $(this).closest("tr");
+        var phId = parent.data("id");
+        var postData = [];
+        postData.push({
+            "name":"alId",
+            "value":ms_edit.getSelection()[0].id
+        });
+        postData.push({
+            "name":"phId",
+            "value":phId
+        });
+        postData.push({
+            name:"_token",
+            value:$('meta[name=csrf-token]').attr("content")
+        });
+
+        $.post(
+            "/admin/deletephoto",
+            postData,
+            function(data){
+                if(data.result){
+                    parent.remove();
+                    if($(".workWithCoverEdit").find("img:first").data("id") == data.content.phId){
+                        cropper.destroy();
+                        $(".workWithCoverEdit").find("img:first").remove();
+                    }
+                }
+            }
+        );
+    }
 });

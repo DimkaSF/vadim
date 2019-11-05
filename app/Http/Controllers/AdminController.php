@@ -85,23 +85,16 @@ class AdminController extends Controller
         return array("result" => true);
     }
 
-    public function delete_one_photo($al_id, $ph_id){
-        Albums_photos::where("id_album", $al_id)
-                ->where("id_photo", $ph_id)
-                ->delete();
-        Photo::where("id", $ph_id)->delete();
-        return array($al_id, $ph_id);
-    }
-
-    public function save_new_cover(Request $request){
+    public function saveNewCover(Request $request){
         DB::delete("delete from albums_photos where id_album = ".$request->al_id." and id_photo = (select title_photo_id from photo_albums where id = ".$request->al_id.")");
         DB::delete("delete from photos where id = (select title_photo_id from photo_albums where id = ".$request->al_id.")");
-
-        $image = Image::make(base64_decode($request["edit_cover"]));
-        $image->save(public_path('img/'.$request->al_name.'/'.$request->al_name."_cover.jpg"));
+        $image = $request->file('edit_cover');
+        $image = Image::make($image);
+        $image->save(public_path('img/'.$request->slug.'/'.$request->slug."_cover.jpg"), 60);
 
         $photo_cover = new Photo();
-        $photo_cover->name = $request->al_name."_cover.jpg";
+        $photo_cover->name = $request->slug."_cover.jpg";
+        $photo_cover->pos = 0;
         $photo_cover->save();
 
         $connection_cover = new Albums_photos();
@@ -112,13 +105,10 @@ class AdminController extends Controller
         PhotoAlbum::where("id", $request->al_id)
                 ->update(['title_photo_id' => $photo_cover->id]);
 
-        return array("Обложка успешно обновлена!", '/img/'.$request->al_name.'/'.$request->al_name."_cover.jpg");
     }
 
-
-
     public function getAlbumsNames(){
-        $albums = PhotoAlbum::select("name", "id")->orderBy("name", "ASC")->get();
+        $albums = PhotoAlbum::select("name", "id", "slug")->orderBy("name", "ASC")->get();
         return array("result" => true, "content" => $albums);
     }
 
@@ -156,7 +146,13 @@ class AdminController extends Controller
     public function savePhoto(Request $request){
         $image = $request->file('file');
         $originalName = $image->getClientOriginalName();
-        $pos = array_search($originalName, $request->order);
+        if(!is_null($request->order)){
+            $pos = array_search($originalName, $request->order);
+        }
+        else{
+            $pos = 98;
+        }
+
         if($pos == 0 || $pos != false){
             $allowExt = ["jpeg", "jpg", "png"];
             if(in_array(strtolower($image->getClientOriginalExtension()), $allowExt)){
@@ -225,5 +221,49 @@ class AdminController extends Controller
         DB::table('tags')->insert($tagsdb);
 
         return array("result"=>true, "content" => array("id" => $album->id, "albumName" => $slug));
+    }
+
+    public function saveAfterEdit(Request $request){
+        //Название, описание
+        PhotoAlbum::where("id", $request->id)
+                ->update(["name" => $request->nameOfAlbum,
+                    "description" => $request->albumDesc]);
+
+        DB::delete("delete from tags where album_id = ".$request->id);
+        //Теги
+        $tagsdb = array();
+        if($request->edit_alInside != null){
+            foreach ($request->edit_alInside as $key => $tag) {
+                $tagsdb[$key] = ["album_id" => $request->id, "tag" => $tag];
+            }
+        }
+        DB::table('tags')->insert($tagsdb);
+
+        //Порядок
+        $ids = explode(",", $request->pos);
+        try{
+            foreach($ids as $key => $id){
+                Photo::where("id", $id)
+                        ->update(["pos" => $key+1]);
+            }
+            return array("result" => true);
+        }
+        catch(exc $e){
+            return array(
+                "result" => false,
+                "errors" => $e
+            );
+        }
+    }
+
+    public function deleteOnePhoto(Request $request){
+        $slug = PhotoAlbum::select("slug")->where("id", $request->alId)->first();
+        $ph_name = Photo::select("name")->where("id", $request->phId)->first();
+        File::delete(public_path('/img/'.$slug["slug"]."/".$ph_name["name"]));
+        Albums_photos::where("id_album", $request->alId)
+                ->where("id_photo", $request->phId)
+                ->delete();
+        Photo::where("id", $request->phId)->delete();
+        return array("result" => true, "content" => array("alId" => $request->alId, "phId" => $request->phId));
     }
 }

@@ -215,6 +215,12 @@ body{
     overflow-y: scroll;
 }
 
+#containerUploaderEdit{
+    height:550px;
+    border:1px black dashed;
+    overflow-y: scroll;
+}
+
 #preview{
     border:1px black solid;
 }

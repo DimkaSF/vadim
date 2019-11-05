@@ -13,15 +13,13 @@
 
 Route::get('/', 'MyController@home');
 
-
-
 Route::group(['prefix'=>"admin", 'middleware'=>"auth"], function(){
     Route::get('/', 'AdminController@index')->middleware('auth')->name('admin');
     Route::post('/send_photo', 'AdminController@save_photo');
     Route::get('/delete_al/show_photo_{id}', 'AdminController@show_preview');
     Route::get("/delete_al_{id}", 'AdminController@delete_album');
     Route::get("/edit_al_{id}", 'AdminController@showPreview');
-    Route::get("/delete/album_{al_id}/photo_{ph_id}", 'AdminController@delete_one_photo');
+    Route::post("/deletephoto", 'AdminController@deleteOnePhoto');
     Route::post("/edit_al/new_cover", 'AdminController@save_new_cover');
     Route::get("/getalbmsnames", 'AdminController@getAlbumsNames');
     Route::post("/getalbmsphotos", 'AdminController@getAlbumsPhotos');
@@ -29,6 +27,8 @@ Route::group(['prefix'=>"admin", 'middleware'=>"auth"], function(){
     Route::post("/save_new_tags", 'AdminController@saveNewTags');
     Route::post("/savephoto", 'AdminController@savePhoto');
     Route::post("/createalbum", "AdminController@createAlbum");
+    Route::post("/saveafteredit", "AdminController@saveAfterEdit");
+    Route::post("/savenewcover", "AdminController@saveNewCover");
 });
 
 Route::get('/genres', 'MyController@getGenresIndex');
