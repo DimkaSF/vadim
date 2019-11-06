@@ -76,8 +76,11 @@ $(function(){
                     };
                     _img.load(file.getSource());
                 });
+                if(_list.find(".rowInfo")){
+                    _list.find(".rowInfo").remove();
+                };
                 _list.append(
-                    $("<tr style=\"border:1px solid black\"></tr>")
+                    $("<tr class=\"rowInfo\" style=\"border:1px solid black\"></tr>")
                         .append("<td colspan=\"3\">Всего файлов : "+files.length+"</td>")
                         .append("<td colspan=\"4\">Общий объём : "+plupload.formatSize(up.total.size)+"</td>")
                 )

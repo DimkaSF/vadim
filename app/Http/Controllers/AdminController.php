@@ -144,30 +144,38 @@ class AdminController extends Controller
 
 
     public function savePhoto(Request $request){
-        $image = $request->file('file');
-        $originalName = $image->getClientOriginalName();
+        $imageOrig = $request->file('file');
+        $originalName = $imageOrig->getClientOriginalName();
         if(!is_null($request->order)){
             $pos = array_search($originalName, $request->order);
         }
         else{
             $pos = 98;
         }
-
         if($pos == 0 || $pos != false){
             $allowExt = ["jpeg", "jpg", "png"];
-            if(in_array(strtolower($image->getClientOriginalExtension()), $allowExt)){
-                $filename = md5($originalName). "." . strtolower($image->getClientOriginalExtension());
+            if(in_array(strtolower($imageOrig->getClientOriginalExtension()), $allowExt)){
+                $filename = md5($originalName). "." . strtolower($imageOrig->getClientOriginalExtension());
                 try{
-                    $image = Image::make($image);
+                    /*сохраняем фото*/
+                    $image = Image::make($imageOrig);
                     $image->save(public_path('img/'.$request->albumName.'/'.$filename), 60);
+                    /*делаем тумбочку*/
+                    $thumb = Image::make($imageOrig);
+                    $thumb->resize($thumb->width()/4, $thumb->height()/4);
+                    $thumb->save(public_path('img/'.$request->albumName.'/thumbs/'.$filename));
+
                     $photo = new Photo();
                     $photo->name = $filename;
                     $photo->pos = $pos+1;
                     $photo->save();
 
+
+
                     $connection = new Albums_photos();
                     $connection->id_album = $request->id;
                     $connection->id_photo = $photo->id;
+
                     $connection->save();
                     return array("result" => true);
                 }
@@ -196,6 +204,7 @@ class AdminController extends Controller
         $album->save();
 
         File::makeDirectory(public_path('img/'.$slug));
+        File::makeDirectory(public_path('img/'.$slug.'/thumbs'));
         $image = Image::make(base64_decode($request["cover"]));
         $image->save(public_path('img/'.$slug.'/'.$slug."_cover.jpg"));
 

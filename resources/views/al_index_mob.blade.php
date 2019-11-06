@@ -1,4 +1,4 @@
-@extends('header')
+@extends('index')
 
 @section('content')
     <div id="slide_down">
@@ -17,24 +17,20 @@
             </div>
             <div class="row">
                 <div class="col-12 text-center">
-                    <p>
-                        @if ($al_info->description == "") <p class="album_description">Описание отсутствует</p>
-                        @else <p class="album_description">{{$al_info->description}}</p>
-                        @endif
+                    <p class="album_description">
+                        @if ($al_info->description != "") {{$al_info->description}} @endif
                     </p>
                 </div>
             </div>
             <div class="row">
                 @foreach($photos_of_album as $photo)
                     <div class="col-12" style="padding-top: 10px">
-                        <img class="carousel-image d-block" src="{{url('img/'.$al_info->name.'/'.$photo->photo->name)}}" width="100%"/>
+                        <img class="carousel-image d-block" src="{{url('img/'.$al_info->slug.'/thumbs/'.$photo->photo->name)}}" width="100%"/>
                     </div>
                 @endforeach
             </div>
         </div>
-
     </div>
 
     <script type="text/javascript" lang="javascript" src="/js/albumIndexMob.js"></script>
-
 @endsection
