@@ -82,7 +82,8 @@ body{
 
 #slide_down .album_description{
     font-family: "room";
-    font-size: 3vh;
+    color:black;
+    font-size: 4vh;
     padding-left: 20%;
     padding-right: 20%;
 }
@@ -192,6 +193,7 @@ body{
     color: white;
     font-size: 40px;
     position: absolute;
+    line-height: 35px;
     top: 50%;
     left: 50%;
     -webkit-transform: translate(-50%, -50%);
@@ -567,7 +569,7 @@ form{
     }
 
     #slide_down .al_name{
-        font-size:5vh;
+        font-size:4vh;
     }
 
     .carousel-div{
