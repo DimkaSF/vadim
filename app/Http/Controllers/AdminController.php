@@ -152,7 +152,7 @@ class AdminController extends Controller
         else{
             $pos = 98;
         }
-        if($pos == 0 || $pos != false){
+        if(getimagesize($imageOrig) && ($pos == 0 || $pos != false)){
             $allowExt = ["jpeg", "jpg", "png"];
             if(in_array(strtolower($imageOrig->getClientOriginalExtension()), $allowExt)){
                 $filename = md5($originalName). "." . strtolower($imageOrig->getClientOriginalExtension());
