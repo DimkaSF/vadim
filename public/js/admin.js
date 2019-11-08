@@ -213,7 +213,7 @@ $(function(){
                         .append(
                             $("<td></td>")
                                 .append(
-                                    $("<i class=\"fa fa-times delPhoto\"></i>")
+                                    $("<i class=\"fa fa-times delPhoto\" data-new\"false\"></i>")
                                         .css("cursor", "pointer")
                                 )
                         )
@@ -285,12 +285,13 @@ $(function(){
                                 pics.push(file);
                                 var _row = $("<tr></tr>")
                                     .attr("data-type", "edit")
+                                    .attr("data-id", file.id)
                                     .append("<td></td>")
                                     .append("<td style=\"word-break: break-all;\">"+file.name+"</td>")
                                     .append(
                                         $("<td></td>")
                                             .append(
-                                                $("<i class=\"fa fa-times delPhoto\"></i>")
+                                                $("<i class=\"fa fa-times delPhoto\" data-new=\"true\"></i>")
                                                     .css("cursor", "pointer")
                                             )
                                     )
@@ -328,10 +329,14 @@ $(function(){
                             });
                         },
                         UploadComplete:function(up, files){
+                            sendDataAfterEdit();
                             $("#before-load").fadeOut(1500);
                         },
                         FileUploaded:function(up, file, result){
-                            if(result.response){
+                            var response = $.parseJSON(result.response);
+
+                            if(response.result){
+                                $("#containerUploaderEdit").find("table:first>tbody:first").find("tr[data-id="+file.id+"]").attr("data-id", response.content.id)
                                 $("#uploadProgress").text("").text(file.name + " загружен. Осталось: " + picCount);
                                 picCount = picCount - 1;
                             }
@@ -570,12 +575,29 @@ $("#formSendPic").on("submit", function(e){
 $("#editContainer").on("click", "form:first input[type=submit]", function(e){
     e.preventDefault();
     e.stopPropagation();
-
     var id = ms_edit.getSelection()[0].id;
     var slug = ms_edit.getSelection()[0].slug;
+
+    if(uploader.files.length != 0){
+        uploader.settings.multipart_params.id = id;
+        uploader.settings.multipart_params.albumName = slug;
+        uploader.start();
+    }
+    else{
+        sendDataAfterEdit();
+    }
+
+
+})
+
+function sendDataAfterEdit(id = null, slug = null){
+    if($.type(id) == "null" && $.type(slug) == "null"){
+        id = ms_edit.getSelection()[0].id;
+        slug = ms_edit.getSelection()[0].slug;
+    }
     var _tokenVal = $('meta[name=csrf-token]').attr("content");
     var newOrder = [];
-    var postData = $(this).closest("form").serializeArray();
+    var postData = $("#editExist").find("form:first").serializeArray();
     $("#containerUploaderEdit>table:first>tbody:first").find("tr").each(function(){
         newOrder.push($(this).data("id"));
     });
@@ -620,40 +642,59 @@ $("#editContainer").on("click", "form:first input[type=submit]", function(e){
                 console.log(data.errors);
             }
         }
-    )
-
-})
+    );
+}
 
 $("#editContainer").on("click", ".delPhoto", function(){
-    if(confirm("Действительно удалить это фото?")){
-        var parent = $(this).closest("tr");
-        var phId = parent.data("id");
-        var postData = [];
-        postData.push({
-            "name":"alId",
-            "value":ms_edit.getSelection()[0].id
-        });
-        postData.push({
-            "name":"phId",
-            "value":phId
-        });
-        postData.push({
-            name:"_token",
-            value:$('meta[name=csrf-token]').attr("content")
-        });
 
-        $.post(
-            "/admin/deletephoto",
-            postData,
-            function(data){
-                if(data.result){
-                    parent.remove();
-                    if($(".workWithCoverEdit").find("img:first").data("id") == data.content.phId){
-                        cropper.destroy();
-                        $(".workWithCoverEdit").find("img:first").remove();
-                    }
-                }
-            }
-        );
+    if($(this).data("new")){
+      var id = $(this).closest("tr").data("id");
+      for(var i=0, len=pics.length; i<len; i++){
+          if(pics[i]["id"] == id){
+              uploader.removeFile(pics[i]);
+              break;
+          }
+      }
+      if(id == $(".workWithCover").find("img:first").data("id")){
+          cropper.destroy();
+          $(".workWithCover").find("img:first").remove();
+      }
+
+      $(this).closest("tr").remove();
     }
+    else{
+      if(confirm("Действительно удалить это фото?")){
+          var parent = $(this).closest("tr");
+          var phId = parent.data("id");
+          var postData = [];
+          postData.push({
+              "name":"alId",
+              "value":ms_edit.getSelection()[0].id
+          });
+          postData.push({
+              "name":"phId",
+              "value":phId
+          });
+          postData.push({
+              name:"_token",
+              value:$('meta[name=csrf-token]').attr("content")
+          });
+
+          $.post(
+              "/admin/deletephoto",
+              postData,
+              function(data){
+                  if(data.result){
+                      parent.remove();
+                      if($(".workWithCoverEdit").find("img:first").data("id") == data.content.phId){
+                          cropper.destroy();
+                          $(".workWithCoverEdit").find("img:first").remove();
+                      }
+                  }
+              }
+          );
+      }
+    }
+
+
 });

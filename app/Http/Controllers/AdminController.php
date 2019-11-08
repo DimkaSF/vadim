@@ -152,15 +152,15 @@ class AdminController extends Controller
         else{
             $pos = 98;
         }
-        if($pos == 0 || $pos != false){
+        if(getimagesize($imageOrig) && ($pos == 0 || $pos != false)){
             $allowExt = ["jpeg", "jpg", "png"];
             if(in_array(strtolower($imageOrig->getClientOriginalExtension()), $allowExt)){
                 $filename = md5($originalName). "." . strtolower($imageOrig->getClientOriginalExtension());
                 try{
-                    /*сохраняем фото*/
+                    //сохраняем фото
                     $image = Image::make($imageOrig);
                     $image->save(public_path('img/'.$request->albumName.'/'.$filename), 60);
-                    /*делаем тумбочку*/
+                    //делаем тумбочку
                     $thumb = Image::make($imageOrig);
                     $thumb->resize($thumb->width()/4, $thumb->height()/4);
                     $thumb->save(public_path('img/'.$request->albumName.'/thumbs/'.$filename));
@@ -169,15 +169,12 @@ class AdminController extends Controller
                     $photo->name = $filename;
                     $photo->pos = $pos+1;
                     $photo->save();
-
-
-
                     $connection = new Albums_photos();
                     $connection->id_album = $request->id;
                     $connection->id_photo = $photo->id;
 
                     $connection->save();
-                    return array("result" => true);
+                    return array("result" => true, "content"=>array("id" => $photo->id));
                 }
                 catch(exc $e){
                     return array(
@@ -193,6 +190,7 @@ class AdminController extends Controller
                 "errors" => "Такой файл не отправлялся"
             );
         }
+
     }
 
     public function createAlbum(Request $request){
@@ -269,6 +267,7 @@ class AdminController extends Controller
         $slug = PhotoAlbum::select("slug")->where("id", $request->alId)->first();
         $ph_name = Photo::select("name")->where("id", $request->phId)->first();
         File::delete(public_path('/img/'.$slug["slug"]."/".$ph_name["name"]));
+        File::delete(public_path('/img/'.$slug["slug"]."/thumbs/".$ph_name["name"]));
         Albums_photos::where("id_album", $request->alId)
                 ->where("id_photo", $request->phId)
                 ->delete();

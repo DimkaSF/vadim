@@ -43,6 +43,7 @@
                     </small>
                 </div>
             </div>
+            <div class="space20"></div>
             <div class="row justify-content-center">
                 <div id="photo_car" class="carousel slide" data-ride="carousel" style="width:90%;" data-piccount="{{count($photos_of_album)}}">
                     <div class="carousel-inner">
@@ -67,14 +68,14 @@
                     <span id="forward"><i class="fa fa-angle-right fa-3x"></i></span>
                 </div>
             </div>
-            <div class="space10"></div>
+            <div class="space30"></div>
             <div class="row">
-                <div class="col-12 text-center">
-                    <p class="album_description">
+                <div class="col-12 text-center album_description" >
+                    <small>
                         @if($al_info->description != "")
                             {{$al_info->description}}
                         @endif
-                    </p>
+                    </small>
                 </div>
             </div>
         </div>

@@ -43,8 +43,6 @@ class MyController extends Controller
                 'tags' => $allAbout["tags"]
             ]);
         }
-
-
         return $view;
     }
 
