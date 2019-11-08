@@ -29,9 +29,7 @@
             </a>
         </div>
         <button class="navbar-toggler order-first" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="toggle nav">
-            <span class="dark-blue-text">
-                <i class="fa fa-bars fa-3x"></i>
-            </span>
+            <img src="{{asset("/img/buter.png")}}" height="21px" width="auto" />
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav">

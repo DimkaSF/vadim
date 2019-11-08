@@ -26,12 +26,18 @@
 .pad-b-20{
     padding-bottom: 20px !important;
 }
-/*
+
 .my_container{
-    margin-left: 6%;
-    margin-right: 6%;
+    padding: .7rem 1rem;
 }
-*/
+
+.my_container>.navbar-toggler{
+    padding:0;
+}
+.my_container>button{
+    padding:0;
+}
+
 .nopadding{
     padding: 0 !important;
     margin: 0 !important;
