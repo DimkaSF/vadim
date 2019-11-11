@@ -7,7 +7,7 @@
             <h1>Я снимаю</h1>
             <div class="space20"></div>
             @foreach($tags as $tag)
-                <a href="/genres/{{$tag->text}}" class="tag" data-tag="{{$tag->text}}">#{{$tag->text}}</a>
+                <a href="/genres/{{$tag->text}}" class="tag" data-tag="{{$tag->text}}">{{$tag->text}}</a>
             @endforeach
             <div class="space20"></div>
         </div>

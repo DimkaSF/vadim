@@ -10,7 +10,7 @@
                     </span>
                     <small>
                       @foreach($tags as $tag)
-                        <a href="/genres/{{$tag->tag}}" class="taglink text-lowercase">#{{$tag->tag}}</a>
+                        <a href="/genres/{{$tag->tag}}" class="taglink text-lowercase">{{$tag->tag}}</a>
                       @endforeach
                     </small>
                 </div>

@@ -38,7 +38,7 @@
                     </span>
                     <small>
                     @foreach($tags as $tag)
-                        <a href="/genres/{{$tag->tag}}" class="taglink">#{{$tag->tag}}</a>
+                        <a href="/genres/{{$tag->tag}}" class="taglink">{{$tag->tag}}</a>
                     @endforeach
                     </small>
                 </div>

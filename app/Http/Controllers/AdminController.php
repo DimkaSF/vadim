@@ -90,7 +90,7 @@ class AdminController extends Controller
         DB::delete("delete from photos where id = (select title_photo_id from photo_albums where id = ".$request->al_id.")");
         $image = $request->file('edit_cover');
         $image = Image::make($image);
-        $image->save(public_path('img/'.$request->slug.'/'.$request->slug."_cover.jpg"), 60);
+        $image->save(public_path('img/'.$request->slug.'/'.$request->slug."_cover.jpg"));
 
         $photo_cover = new Photo();
         $photo_cover->name = $request->slug."_cover.jpg";
@@ -162,7 +162,7 @@ class AdminController extends Controller
                     $image->save(public_path('img/'.$request->albumName.'/'.$filename), 60);
                     //делаем тумбочку
                     $thumb = Image::make($imageOrig);
-                    $thumb->resize($thumb->width()/4, $thumb->height()/4);
+                    $thumb->resize($thumb->width()/3, $thumb->height()/3);
                     $thumb->save(public_path('img/'.$request->albumName.'/thumbs/'.$filename));
 
                     $photo = new Photo();

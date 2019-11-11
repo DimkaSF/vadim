@@ -465,12 +465,16 @@ $("body").on("click", "*[class=onCover]", function(){
             break;
         }
     }
-    $(".workWithCover").html("");
+    if(_row.data("type") == "edit"){
+        selector = "Edit";
+    }
+    $(".workWithCover"+selector).html("");
 
+    var _parent = $(".workWithCover"+selector);
     var reader = new FileReader();
     reader.readAsDataURL(pics[ind].getNative());
 
-    var _parent = $(".workWithCover"+selector);
+
     reader.onload = function (e) {
         _parent.append("<img id=\"myCover\" src=\""+e.srcElement.result+"\" width=\"100%\" data-id=\""+pics[ind]["id"]+"\" />");
     };

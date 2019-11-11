@@ -75,7 +75,7 @@ body{
 
 #slide_down .al_name{
     font-family: "room";
-    font-size: 7vh;
+    font-size: 5vh;
 }
 
 /*.carousel-div img{
@@ -87,7 +87,7 @@ body{
 }
 
 #slide_down .album_description{
-    font-family: "room";
+    font-family: "opensans";
     color:black;
     font-size: 4vh;
     padding-left: 20%;
@@ -393,13 +393,13 @@ form{
 }
 
 .me .big{
-    font-size:50px;
+    font-size:7vh;
     font-family: "roombold";
 }
 .me .small{
-    font-size:25px;
+    font-size:2vh;
     margin-bottom: 10px;
-    font-family: "room";
+    font-family: "opensans";
 }
 
 
@@ -559,6 +559,11 @@ form{
 }
 
 @media (max-width: 425px){
+    #slide_down .album_description{
+        font-size: 2.3vh;
+        padding: 0;
+    }
+    
     .navbar-light .navbar-toggler{
         border:none;
         color:black;
@@ -576,6 +581,7 @@ form{
 
     #slide_down .al_name{
         font-size:4vh;
+        line-height:1vh;
     }
 
     .carousel-div{
